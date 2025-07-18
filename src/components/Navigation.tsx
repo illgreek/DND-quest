@@ -2,11 +2,54 @@
 
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getHeroClassLabel } from '@/lib/heroClasses'
+
+interface Friendship {
+  id: string
+  status: string
+  senderId: string
+  receiverId: string
+  createdAt: string
+}
 
 export default function Navigation() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [pendingRequests, setPendingRequests] = useState<Friendship[]>([])
+
+  useEffect(() => {
+    if (session) {
+      fetchPendingRequests()
+    }
+  }, [session])
+
+  useEffect(() => {
+    const handleFriendshipUpdate = () => {
+      fetchPendingRequests()
+    }
+
+    window.addEventListener('friendship-updated', handleFriendshipUpdate)
+    
+    return () => {
+      window.removeEventListener('friendship-updated', handleFriendshipUpdate)
+    }
+  }, [session])
+
+  const fetchPendingRequests = async () => {
+    try {
+      const response = await fetch('/api/friendships')
+      if (response.ok) {
+        const friendships = await response.json()
+        const pending = friendships.filter((f: Friendship) => 
+          f.receiverId === session?.user.id && f.status === 'PENDING'
+        )
+        setPendingRequests(pending)
+      }
+    } catch (err) {
+      console.error('Error fetching pending requests:', err)
+    }
+  }
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })
@@ -24,7 +67,14 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            {session ? (
+            {status === 'loading' ? (
+              <>
+                <div className="w-20 h-6 bg-gray-700 rounded animate-pulse"></div>
+                <div className="w-24 h-6 bg-gray-700 rounded animate-pulse"></div>
+                <div className="w-28 h-6 bg-gray-700 rounded animate-pulse"></div>
+                <div className="w-32 h-8 bg-gray-700 rounded animate-pulse"></div>
+              </>
+            ) : session ? (
               <>
                 <Link 
                   href="/quests/my"
@@ -34,21 +84,20 @@ export default function Navigation() {
                 </Link>
                 <Link 
                   href="/heroes"
-                  className="text-gray-300 hover:text-yellow-400 transition-colors"
+                  className="text-gray-300 hover:text-yellow-400 transition-colors relative"
                 >
-                  Знайти Героїв
+                  Герої
+                  {pendingRequests.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {pendingRequests.length}
+                    </span>
+                  )}
                 </Link>
                 <Link 
                   href="/quests/create"
                   className="text-gray-300 hover:text-yellow-400 transition-colors"
                 >
                   Створити Квест
-                </Link>
-                <Link 
-                  href="/quests/create?assignTo=self"
-                  className="text-gray-300 hover:text-yellow-400 transition-colors"
-                >
-                  Квест для Себе
                 </Link>
                 
                 {/* User Menu */}
@@ -58,7 +107,7 @@ export default function Navigation() {
                       {session.user.heroName || session.user.name}
                     </span>
                     <span className="text-xs bg-gray-700 px-2 py-1 rounded">
-                      Lvl {session.user.heroLevel}
+                      Lvl {session.user.heroLevel} • {getHeroClassLabel(session.user.heroClass || '')}
                     </span>
                   </button>
                   
@@ -114,7 +163,14 @@ export default function Navigation() {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-700">
-            {session ? (
+            {status === 'loading' ? (
+              <div className="space-y-2">
+                <div className="w-20 h-6 bg-gray-700 rounded animate-pulse"></div>
+                <div className="w-24 h-6 bg-gray-700 rounded animate-pulse"></div>
+                <div className="w-28 h-6 bg-gray-700 rounded animate-pulse"></div>
+                <div className="w-32 h-8 bg-gray-700 rounded animate-pulse"></div>
+              </div>
+            ) : session ? (
               <div className="space-y-2">
                 <Link 
                   href="/quests/my"
@@ -125,10 +181,15 @@ export default function Navigation() {
                 </Link>
                 <Link 
                   href="/heroes"
-                  className="block text-gray-300 hover:text-yellow-400 py-2"
+                  className="block text-gray-300 hover:text-yellow-400 py-2 relative"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Знайти Героїв
+                  Герої
+                  {pendingRequests.length > 0 && (
+                    <span className="ml-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 inline-flex items-center justify-center">
+                      {pendingRequests.length}
+                    </span>
+                  )}
                 </Link>
                 <Link 
                   href="/quests/create"
@@ -136,13 +197,6 @@ export default function Navigation() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Створити Квест
-                </Link>
-                <Link 
-                  href="/quests/create?assignTo=self"
-                  className="block text-gray-300 hover:text-yellow-400 py-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Квест для Себе
                 </Link>
                 <Link 
                   href="/profile"

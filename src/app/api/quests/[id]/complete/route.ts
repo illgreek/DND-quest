@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { getCurrentLevel, canLevelUp } from '@/lib/heroLevels'
 
 export async function POST(
   request: NextRequest,
@@ -24,6 +25,16 @@ export async function POST(
     // Check if quest exists and user is the receiver
     const quest = await prisma.quest.findUnique({
       where: { id: questId }
+    })
+
+    console.log('Quest data:', {
+      id: quest?.id,
+      title: quest?.title,
+      reward: quest?.reward,
+      experience: quest?.experience,
+      status: quest?.status,
+      receiverId: quest?.receiverId,
+      userId: userId
     })
 
     if (!quest) {
@@ -59,6 +70,12 @@ export async function POST(
       })
 
       // Update user rewards
+      console.log('Updating user rewards:', {
+        userId,
+        questReward: quest.reward,
+        questExperience: quest.experience
+      })
+      
       const updatedUser = await tx.user.update({
         where: { id: userId },
         data: {
@@ -68,18 +85,49 @@ export async function POST(
           experience: {
             increment: quest.experience
           }
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          heroName: true,
+          heroClass: true,
+          heroLevel: true,
+          experience: true,
+          gold: true,
+          hasSeenTutorial: true
         }
       })
 
-      // Check if user leveled up (every 100 XP = 1 level)
-      const newLevel = Math.floor(updatedUser.experience / 100) + 1
+      console.log('Updated user data:', {
+        userId: updatedUser.id,
+        newGold: updatedUser.gold,
+        newExp: updatedUser.experience,
+        oldGold: updatedUser.gold - quest.reward,
+        oldExp: updatedUser.experience - quest.experience
+      })
+
+      // Check if user leveled up using our level system
+      const currentLevel = getCurrentLevel(updatedUser.heroClass || 'Warrior', updatedUser.experience)
+      const leveledUp = canLevelUp(updatedUser.heroClass || 'Warrior', updatedUser.experience)
       let finalUser = updatedUser
 
-      if (newLevel > updatedUser.heroLevel) {
+      if (leveledUp) {
         finalUser = await tx.user.update({
           where: { id: userId },
           data: {
-            heroLevel: newLevel
+            heroLevel: currentLevel.level
+          },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            heroName: true,
+            heroClass: true,
+            heroLevel: true,
+            experience: true,
+            gold: true,
+            hasSeenTutorial: true
           }
         })
       }
@@ -90,7 +138,7 @@ export async function POST(
         rewards: {
           gold: quest.reward,
           experience: quest.experience,
-          levelUp: newLevel > updatedUser.heroLevel
+          levelUp: leveledUp
         }
       }
     })

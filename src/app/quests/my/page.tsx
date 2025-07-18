@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { getHeroClassLabel, heroClasses } from '@/lib/heroClasses'
+import { getCurrentLevel } from '@/lib/heroLevels'
+
 
 interface Quest {
   id: string
@@ -22,17 +25,19 @@ interface Quest {
     name?: string
     heroName?: string
     heroClass?: string
+    experience?: number
   }
   receiver?: {
     id: string
     name?: string
     heroName?: string
     heroClass?: string
+    experience?: number
   }
 }
 
 export default function MyQuests() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [quests, setQuests] = useState<Quest[]>([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('all')
@@ -62,8 +67,11 @@ export default function MyQuests() {
     OPEN: { label: 'Відкритий', emoji: '🔓', color: 'text-blue-400' },
     IN_PROGRESS: { label: 'Виконується', emoji: '⚡', color: 'text-yellow-400' },
     COMPLETED: { label: 'Завершено', emoji: '✅', color: 'text-green-400' },
-    FAILED: { label: 'Провалено', emoji: '❌', color: 'text-red-400' }
+    FAILED: { label: 'Провалено', emoji: '❌', color: 'text-red-400' },
+    CANCELLED: { label: 'Відкликано', emoji: '🚫', color: 'text-gray-400' }
   }
+
+
 
   useEffect(() => {
     fetchQuests()
@@ -72,7 +80,15 @@ export default function MyQuests() {
   const fetchQuests = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/quests?type=${activeTab}`)
+      // Перетворюємо значення activeTab у правильні параметри для API
+      let apiType = 'all'
+      if (activeTab === 'assigned') {
+        apiType = 'assigned_to_me'
+      } else if (activeTab === 'created') {
+        apiType = 'created_by_me'
+      }
+      
+      const response = await fetch(`/api/quests?type=${apiType}`)
       
       if (response.ok) {
         const data = await response.json()
@@ -95,6 +111,8 @@ export default function MyQuests() {
 
       if (response.ok) {
         fetchQuests()
+        setSuccess('Квест успішно прийнято! Тепер ви можете його виконати.')
+        setTimeout(() => setSuccess(''), 3000)
       }
     } catch (err) {
       setError('Помилка прийняття квесту')
@@ -109,9 +127,16 @@ export default function MyQuests() {
 
       if (response.ok) {
         const result = await response.json()
+        console.log('Quest completion result:', result)
+        
         fetchQuests()
         setShowCompleteModal(false)
         setSelectedQuest(null)
+        
+        // Оновлюємо дані без перезавантаження сторінки
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
         
         // Show success message
         let message = `Квест успішно здано! Отримано: ${result.rewards.gold} 🪙 золота та ${result.rewards.experience} ⭐ досвіду`
@@ -128,6 +153,25 @@ export default function MyQuests() {
     }
   }
 
+  const handleCancelQuest = async (questId: string) => {
+    try {
+      const response = await fetch(`/api/quests/${questId}/cancel`, {
+        method: 'POST'
+      })
+
+      if (response.ok) {
+        fetchQuests()
+        setSuccess('Квест успішно відкликано!')
+        setTimeout(() => setSuccess(''), 3000)
+      } else {
+        const errorData = await response.json()
+        setError(errorData.error || 'Помилка відкликання квесту')
+      }
+    } catch (err) {
+      setError('Помилка відкликання квесту')
+    }
+  }
+
   const openCompleteModal = (quest: Quest) => {
     setSelectedQuest(quest)
     setShowCompleteModal(true)
@@ -141,6 +185,42 @@ export default function MyQuests() {
       hour: '2-digit',
       minute: '2-digit'
     })
+  }
+
+  // Функція для визначення, чи може користувач прийняти квест
+  const canAcceptQuest = (quest: Quest) => {
+    return quest.status === 'OPEN' && 
+           quest.receiver?.id === session?.user.id && 
+           quest.creator?.id !== session?.user.id
+  }
+
+  // Функція для визначення, чи може користувач здати квест
+  const canCompleteQuest = (quest: Quest) => {
+    return quest.status === 'IN_PROGRESS' && 
+           quest.receiver?.id === session?.user.id
+  }
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 relative">
+            <div className="absolute inset-0 animate-spin">
+              <div className="w-full h-full border-4 border-transparent border-t-yellow-400 border-r-blue-400 rounded-full"></div>
+            </div>
+            <div className="absolute inset-2 bg-gray-800 rounded-full flex items-center justify-center">
+              <span className="text-yellow-400 text-xs font-bold">⚔️</span>
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-yellow-400 mb-2">
+            Завантаження пригод...
+          </h2>
+          <p className="text-gray-300">
+            Готуємо світ для твоїх героїв
+          </p>
+        </div>
+      </div>
+    )
   }
 
   if (!session) {
@@ -175,17 +255,11 @@ export default function MyQuests() {
           </div>
         )}
 
-        {success && (
-          <div className="bg-green-600 text-white p-4 rounded-lg mb-6 whitespace-pre-line">
-            {success}
-          </div>
-        )}
-
         {/* Tabs */}
         <div className="flex flex-wrap gap-2 mb-6 justify-center">
           <button
             onClick={() => setActiveTab('all')}
-            className={`px-4 py-2 rounded-lg transition-colors ${
+            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
               activeTab === 'all'
                 ? 'bg-yellow-400 text-gray-900'
                 : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -194,52 +268,32 @@ export default function MyQuests() {
             Всі Квести
           </button>
           <button
-            onClick={() => setActiveTab('created')}
-            className={`px-4 py-2 rounded-lg transition-colors ${
-              activeTab === 'created'
-                ? 'bg-yellow-400 text-gray-900'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-            }`}
-          >
-            Створені Мною
-          </button>
-          <button
-            onClick={() => setActiveTab('accepted')}
-            className={`px-4 py-2 rounded-lg transition-colors ${
-              activeTab === 'accepted'
-                ? 'bg-yellow-400 text-gray-900'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-            }`}
-          >
-            Прийняті Мною
-          </button>
-          <button
-            onClick={() => setActiveTab('available')}
-            className={`px-4 py-2 rounded-lg transition-colors ${
-              activeTab === 'available'
-                ? 'bg-yellow-400 text-gray-900'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-            }`}
-          >
-            Доступні Квести
-          </button>
-          <button
             onClick={() => setActiveTab('assigned')}
-            className={`px-4 py-2 rounded-lg transition-colors ${
+            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
               activeTab === 'assigned'
                 ? 'bg-yellow-400 text-gray-900'
                 : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
             }`}
           >
-            Призначені Мені
+            Квести Мені
+          </button>
+          <button
+            onClick={() => setActiveTab('created')}
+            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+              activeTab === 'created'
+                ? 'bg-yellow-400 text-gray-900'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+            }`}
+          >
+            Квести від Мене
           </button>
         </div>
 
-        {/* Create Quest Button */}
+        {/* Create Button */}
         <div className="text-center mb-6">
           <Link
             href="/quests/create"
-            className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors inline-flex items-center gap-2"
+            className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
           >
             <span>⚔️</span>
             Створити Новий Квест
@@ -248,188 +302,237 @@ export default function MyQuests() {
 
         {/* Quests List */}
         {loading ? (
-          <div className="text-center py-8">
-            <div className="text-yellow-400 text-xl">Завантаження квестів...</div>
+          <div className="text-center py-12">
+            <div className="w-16 h-16 mx-auto mb-4 relative">
+              <div className="absolute inset-0 animate-spin">
+                <div className="w-full h-full border-4 border-transparent border-t-yellow-400 border-r-blue-400 rounded-full"></div>
+              </div>
+              <div className="absolute inset-2 bg-gray-800 rounded-full flex items-center justify-center">
+                <span className="text-yellow-400 text-xs font-bold">⚔️</span>
+              </div>
+            </div>
+            <h2 className="text-xl font-bold text-yellow-400 mb-2">
+              Завантаження квестів...
+            </h2>
+            <p className="text-gray-300">
+              Знаходимо твої епічні місії
+            </p>
           </div>
         ) : quests.length === 0 ? (
           <div className="text-center py-8">
-            <div className="text-gray-400 text-xl mb-4">
-              {activeTab === 'all' && 'У вас поки немає квестів'}
-              {activeTab === 'created' && 'Ви ще не створили квестів'}
-              {activeTab === 'accepted' && 'Ви ще не прийняли квестів'}
-              {activeTab === 'available' && 'Немає доступних квестів'}
-              {activeTab === 'assigned' && 'Вам поки не призначили квестів'}
+            <div className="text-gray-400 text-xl">
+              У вас поки немає квестів
             </div>
-            {activeTab === 'available' && (
-              <Link
-                href="/quests/create"
-                className="text-yellow-400 hover:text-yellow-300"
-              >
-                Створити перший квест
-              </Link>
-            )}
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {quests.map((quest) => (
-              <div
-                key={quest.id}
-                className={`bg-gray-800 bg-opacity-50 rounded-lg p-6 border ${
-                  quest.isUrgent ? 'border-red-500' : 'border-gray-700'
-                }`}
-              >
-                {/* Quest Header */}
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-white mb-1">
-                      {quest.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className={difficulties[quest.difficulty as keyof typeof difficulties]?.color}>
-                        {difficulties[quest.difficulty as keyof typeof difficulties]?.emoji}
-                        {difficulties[quest.difficulty as keyof typeof difficulties]?.label}
-                      </span>
-                      <span className="text-gray-400">•</span>
-                      <span className="text-gray-400">
-                        {categories[quest.category as keyof typeof categories]?.emoji}
-                        {categories[quest.category as keyof typeof categories]?.label}
-                      </span>
+            {quests.map((quest) => {
+              const heroClass = heroClasses[quest.creator?.heroClass as keyof typeof heroClasses]
+              const receiverClass = quest.receiver ? heroClasses[quest.receiver.heroClass as keyof typeof heroClasses] : null
+              const creatorLevel = quest.creator?.heroClass ? getCurrentLevel(quest.creator.heroClass, quest.creator.experience || 0) : null
+
+              return (
+                <div key={quest.id} className="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                  {/* Quest Header */}
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-white mb-2">
+                        {quest.title}
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-400">
+                          {heroClass?.emoji} {heroClass?.label}
+                        </span>
+                        <span className="text-gray-600">•</span>
+                        <span className="text-sm text-gray-400">
+                          {creatorLevel ? creatorLevel.title : 'Рівень 1'}
+                        </span>
+                        {activeTab === 'assigned' && quest.creator && (
+                          <>
+                            <span className="text-gray-600">•</span>
+                            <span className="text-sm text-gray-400">
+                              Створив: {quest.creator.heroName || quest.creator.name}
+                            </span>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  {quest.isUrgent && (
-                    <span className="text-red-400 text-sm font-bold">⚡ ТЕРМІНОВО</span>
-                  )}
-                </div>
 
-                {/* Quest Description */}
-                <p className="text-gray-300 text-sm mb-4 line-clamp-3">
-                  {quest.description}
-                </p>
+                  {/* Quest Description */}
+                  <p className="text-gray-300 mb-4 line-clamp-2">
+                    {quest.description}
+                  </p>
 
-                {/* Quest Details */}
-                <div className="space-y-2 mb-4">
-                  {quest.location && (
-                    <div className="text-sm text-gray-400">
-                      📍 {quest.location}
+                  {/* Quest Details */}
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <span>🎯</span>
+                      <span>Складність: {difficulties[quest.difficulty as keyof typeof difficulties]?.emoji} {difficulties[quest.difficulty as keyof typeof difficulties]?.label}</span>
                     </div>
-                  )}
-                  {quest.dueDate && (
-                    <div className="text-sm text-gray-400">
-                      ⏰ {formatDate(quest.dueDate)}
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <span>⏰</span>
+                      <span>Дедлайн: {quest.dueDate ? new Date(quest.dueDate).toLocaleDateString('uk-UA') : 'Немає'}</span>
                     </div>
-                  )}
-                  <div className="text-sm text-gray-400">
-                    🕐 {formatDate(quest.createdAt)}
+                    {quest.receiver && (
+                      <div className="flex items-center gap-2 text-sm text-gray-400">
+                        <span>👤</span>
+                        <span>
+                          {quest.receiver.id === session.user.id ? (
+                            'Доручено: вам'
+                          ) : (
+                            `Доручено: ${receiverClass?.emoji} ${quest.receiver?.heroName || quest.receiver?.name}`
+                          )}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                </div>
 
-                {/* Quest Status */}
-                <div className="mb-4">
-                  <span className={`text-sm font-bold ${statuses[quest.status as keyof typeof statuses]?.color}`}>
-                    {statuses[quest.status as keyof typeof statuses]?.emoji}
-                    {statuses[quest.status as keyof typeof statuses]?.label}
-                  </span>
-                </div>
-
-                {/* Quest Rewards */}
-                <div className="flex justify-between items-center mb-4">
-                  <div className="flex gap-4 text-sm">
-                    <span className="text-yellow-400">🪙 {quest.reward}</span>
-                    <span className="text-blue-400">⭐ {quest.experience}</span>
+                  {/* Quest Status */}
+                  <div className="mb-4">
+                    <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                      quest.status === 'OPEN' ? 'bg-blue-600 text-blue-100' :
+                      quest.status === 'IN_PROGRESS' ? 'bg-yellow-600 text-yellow-100' :
+                      quest.status === 'COMPLETED' ? 'bg-green-600 text-green-100' :
+                      quest.status === 'FAILED' ? 'bg-red-600 text-red-100' :
+                      quest.status === 'CANCELLED' ? 'bg-gray-600 text-gray-100' :
+                      'bg-gray-600 text-gray-100'
+                    }`}>
+                      {quest.status === 'OPEN' ? '🔓 Відкритий' :
+                       quest.status === 'IN_PROGRESS' ? '⚡ Виконується' :
+                       quest.status === 'COMPLETED' ? '✅ Завершено' :
+                       quest.status === 'FAILED' ? '❌ Провалено' :
+                       quest.status === 'CANCELLED' ? '🚫 Відкликано' :
+                       '❓ Невідомо'}
+                    </span>
                   </div>
-                </div>
 
-                {/* Quest Actions */}
-                <div className="space-y-2">
-                  {quest.status === 'OPEN' && activeTab === 'available' && (
+                  {/* Quest Rewards */}
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="flex gap-4">
+                      <div className="text-center">
+                        <div className="text-yellow-400 font-bold">{quest.reward}</div>
+                        <div className="text-xs text-gray-400">🪙 Золото</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-blue-400 font-bold">{quest.experience}</div>
+                        <div className="text-xs text-gray-400">⭐ Досвід</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quest Actions */}
+                  {quest.status === 'OPEN' && quest.receiver?.id === session.user.id && quest.creator?.id !== session.user.id && (
                     <button
                       onClick={() => handleAcceptQuest(quest.id)}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
+                      className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors mb-2"
                     >
                       Прийняти Квест
                     </button>
                   )}
-                  
-                  {quest.status === 'OPEN' && activeTab === 'assigned' && (
+
+                  {/* Кнопка для квестів, призначених собі */}
+                  {quest.status === 'OPEN' && quest.receiver?.id === session.user.id && quest.creator?.id === session.user.id && (
                     <button
                       onClick={() => handleAcceptQuest(quest.id)}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
+                      className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors mb-2"
                     >
-                      Прийняти Квест
+                      Почати Виконання
                     </button>
                   )}
-                  
+
+                  {/* Кнопка здачі для квестів в процесі виконання (включаючи створені для себе) */}
                   {quest.status === 'IN_PROGRESS' && quest.receiver?.id === session.user.id && (
                     <button
                       onClick={() => openCompleteModal(quest)}
-                      className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors"
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors mb-2"
                     >
-                      Здати Квест ✅
+                      Завершити Квест
                     </button>
                   )}
 
-                  {/* Quest Creator/Receiver Info */}
-                  {quest.creator && (
-                    <div className="text-xs text-gray-400">
-                      Створив: {quest.creator.heroName || quest.creator.name}
-                      {quest.creator.heroClass && ` (${quest.creator.heroClass})`}
+                  {/* Показуємо інформацію для квестів, створених користувачем */}
+                  {quest.creator?.id === session.user.id && quest.status === 'OPEN' && !quest.receiver && (
+                    <div className="text-center text-gray-400 text-sm mb-2">
+                      Квест очікує призначення
                     </div>
                   )}
-                  {quest.receiver && (
-                    <div className="text-xs text-gray-400">
-                      Виконує: {quest.receiver.heroName || quest.receiver.name}
-                      {quest.receiver.heroClass && ` (${quest.receiver.heroClass})`}
+
+                  {/* Показуємо інформацію для квестів, призначених собі */}
+                  {quest.creator?.id === session.user.id && quest.status === 'OPEN' && quest.receiver?.id === session.user.id && (
+                    <div className="text-center text-green-400 text-sm mb-2">
+                      ✅ Призначено вам
                     </div>
                   )}
+
+                  {/* Показуємо інформацію для квестів, створених для себе і в процесі виконання */}
+                  {quest.creator?.id === session.user.id && quest.status === 'IN_PROGRESS' && quest.receiver?.id === session.user.id && (
+                    <div className="text-center text-blue-400 text-sm mb-2">
+                      ⚡ Виконується вами
+                    </div>
+                  )}
+
+                  {/* Кнопка відкликання для квестів, створених користувачем (тільки якщо призначено другу) */}
+                  {quest.creator?.id === session.user.id && quest.status === 'OPEN' && quest.receiver && quest.receiver.id !== session.user.id && (
+                    <button
+                      onClick={() => handleCancelQuest(quest.id)}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors mb-2"
+                    >
+                      Відкликати Квест
+                    </button>
+                  )}
+
+                  {/* Показуємо повідомлення для відкликаних квестів */}
+                  {quest.status === 'CANCELLED' && (
+                    <div className="text-center text-gray-400 text-sm mb-2">
+                      Квест було відкликано
+                    </div>
+                  )}
+
+                  <div className="text-xs text-gray-500 text-center">
+                    Створено {new Date(quest.createdAt).toLocaleDateString('uk-UA')}
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
 
         {/* Complete Quest Modal */}
         {showCompleteModal && selectedQuest && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full">
-              <h3 className="text-xl font-bold text-white mb-4">
-                Здати квест: {selectedQuest.title}
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+              <h3 className="text-xl font-bold text-yellow-400 mb-4">
+                Завершити Квест
               </h3>
-              
-              <div className="mb-6">
-                <p className="text-gray-300 mb-4">
-                  Ви впевнені, що хочете здати цей квест? Це дозволить вам отримати нагороди:
-                </p>
-                
-                <div className="bg-gray-700 rounded-lg p-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-yellow-400">🪙 Золото:</span>
-                    <span className="text-white font-bold">{selectedQuest.reward}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-blue-400">⭐ Досвід:</span>
-                    <span className="text-white font-bold">{selectedQuest.experience}</span>
-                  </div>
-                </div>
-              </div>
-
+              <p className="text-gray-300 mb-6">
+                Ви впевнені, що хочете завершити квест "{selectedQuest.title}"?
+              </p>
               <div className="flex gap-4">
                 <button
                   onClick={() => handleCompleteQuest(selectedQuest.id)}
-                  className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+                  className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors"
                 >
-                  Здати Квест ✅
+                  Завершити
                 </button>
                 <button
                   onClick={() => {
                     setShowCompleteModal(false)
                     setSelectedQuest(null)
                   }}
-                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors"
                 >
                   Скасувати
                 </button>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Success Message */}
+        {success && (
+          <div className="fixed top-4 right-4 bg-green-600 text-white p-4 rounded-lg shadow-lg z-50 max-w-md">
+            <div className="whitespace-pre-line">{success}</div>
           </div>
         )}
       </div>

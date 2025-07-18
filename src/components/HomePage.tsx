@@ -4,10 +4,14 @@ import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import TutorialModal from './TutorialModal'
+import { getHeroClassLabel } from '@/lib/heroClasses'
+
 
 export default function HomePage() {
   const { data: session, status } = useSession()
   const [showTutorial, setShowTutorial] = useState(false)
+
+
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user && !session.user.hasSeenTutorial) {
@@ -18,7 +22,22 @@ export default function HomePage() {
   if (status === 'loading') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Завантаження...</div>
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 relative">
+            <div className="absolute inset-0 animate-spin">
+              <div className="w-full h-full border-4 border-transparent border-t-yellow-400 border-r-blue-400 rounded-full"></div>
+            </div>
+            <div className="absolute inset-2 bg-gray-800 rounded-full flex items-center justify-center">
+              <span className="text-yellow-400 text-xs font-bold">⚔️</span>
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-yellow-400 mb-2">
+            Завантаження пригод...
+          </h2>
+          <p className="text-gray-300">
+            Готуємо світ для твоїх героїв
+          </p>
+        </div>
       </div>
     )
   }
@@ -44,9 +63,9 @@ export default function HomePage() {
                   </h2>
                   <p className="text-gray-300 mb-6 text-center text-lg">
                     Рівень: <span className="text-yellow-400 font-bold">{session.user.heroLevel}</span> | 
-                    Клас: <span className="text-blue-400 font-bold">{session.user.heroClass || 'Новичок'}</span>
+                    Клас: <span className="text-blue-400 font-bold">{getHeroClassLabel(session.user.heroClass || '') || 'Новичок'}</span>
                   </p>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-3 gap-3">
                     <Link 
                       href="/quests/my"
                       className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 text-center text-sm"
@@ -64,12 +83,6 @@ export default function HomePage() {
                       className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 text-center text-sm"
                     >
                       Створити Квест
-                    </Link>
-                    <Link 
-                      href="/quests/create?assignTo=self"
-                      className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 text-center text-sm"
-                    >
-                      Квест для Себе
                     </Link>
                   </div>
                 </div>

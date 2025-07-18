@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { getHeroClassLabel } from '@/lib/heroClasses'
+// Removed import of PageSkeleton due to missing module
 
 interface Friend {
   id: string
@@ -16,20 +18,20 @@ interface Friend {
 export default function CreateQuestForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [friends, setFriends] = useState<Friend[]>([])
   const [loadingFriends, setLoadingFriends] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    reward: 0,
-    experience: 0,
+    reward: 10, // За замовчуванням для EASY складності
+    experience: 5, // За замовчуванням для EASY складності
     difficulty: 'EASY',
     category: 'GENERAL',
     location: '',
     dueDate: '',
     isUrgent: false,
-    assignTo: 'self'
+    assignTo: 'self' // За замовчуванням призначаємо собі
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -51,8 +53,16 @@ export default function CreateQuestForm() {
     { value: 'GENERAL', label: 'Загальне', emoji: '📋' }
   ]
 
+
+
   const handleDifficultyChange = (difficulty: string) => {
     const selectedDifficulty = difficulties.find(d => d.value === difficulty)
+    console.log('Difficulty changed:', {
+      difficulty,
+      selectedDifficulty,
+      reward: selectedDifficulty?.reward || 0,
+      experience: selectedDifficulty?.exp || 0
+    })
     setFormData({
       ...formData,
       difficulty,
@@ -63,13 +73,7 @@ export default function CreateQuestForm() {
 
   useEffect(() => {
     fetchFriends()
-    
-    // Check if assignTo parameter is in URL
-    const assignTo = searchParams.get('assignTo')
-    if (assignTo) {
-      setFormData(prev => ({ ...prev, assignTo }))
-    }
-  }, [searchParams])
+  }, [])
 
   const fetchFriends = async () => {
     try {
@@ -91,6 +95,12 @@ export default function CreateQuestForm() {
     setLoading(true)
     setError('')
 
+    console.log('Submitting quest form:', {
+      ...formData,
+      assignToValue: formData.assignTo,
+      assignToType: typeof formData.assignTo
+    })
+
     try {
       const response = await fetch('/api/quests', {
         method: 'POST',
@@ -111,6 +121,29 @@ export default function CreateQuestForm() {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 relative">
+            <div className="absolute inset-0 animate-spin">
+              <div className="w-full h-full border-4 border-transparent border-t-yellow-400 border-r-blue-400 rounded-full"></div>
+            </div>
+            <div className="absolute inset-2 bg-gray-800 rounded-full flex items-center justify-center">
+              <span className="text-yellow-400 text-xs font-bold">⚔️</span>
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-yellow-400 mb-2">
+            Завантаження пригод...
+          </h2>
+          <p className="text-gray-300">
+            Готуємо світ для твоїх героїв
+          </p>
+        </div>
+      </div>
+    )
   }
 
   if (!session) {
@@ -246,13 +279,13 @@ export default function CreateQuestForm() {
 
           {/* Assign to specific hero */}
           <div>
-            <label className="block text-gray-300 mb-2">Призначити герою</label>
+            <label className="block text-gray-300 mb-2">Призначити квест</label>
             <select
               value={formData.assignTo}
               onChange={(e) => setFormData({ ...formData, assignTo: e.target.value })}
               className="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-yellow-400 focus:outline-none"
             >
-              <option value="self">Створити для себе</option>
+              <option value="self">Собі (я буду виконувати)</option>
               {loadingFriends ? (
                 <option disabled>Завантаження друзів...</option>
               ) : friends.length === 0 ? (
@@ -260,7 +293,7 @@ export default function CreateQuestForm() {
               ) : (
                 friends.map((friend) => (
                   <option key={friend.id} value={friend.id}>
-                    {friend.heroName || friend.name} ({friend.heroClass}) - Рівень {friend.heroLevel}
+                    Другу: {friend.heroName || friend.name} ({getHeroClassLabel(friend.heroClass || '')}) - Рівень {friend.heroLevel}
                   </option>
                 ))
               )}
@@ -269,12 +302,17 @@ export default function CreateQuestForm() {
               <p className="text-sm text-gray-400 mt-2">
                 <Link href="/heroes" className="text-yellow-400 hover:text-yellow-300">
                   Знайти героїв
-                </Link> щоб призначати квести конкретним друзям
+                </Link> щоб призначати квести друзям
               </p>
             )}
             {formData.assignTo === 'self' && (
+              <p className="text-sm text-green-400 mt-2">
+                ✅ Квест буде призначений вам і одразу стане доступним для виконання!
+              </p>
+            )}
+            {formData.assignTo && formData.assignTo !== 'self' && (
               <p className="text-sm text-blue-400 mt-2">
-                💡 Квест буде створено для вас. Ви зможете прийняти його та виконати для отримання нагород!
+                📤 Квест буде надіслано вашому другу. Він зможе його прийняти!
               </p>
             )}
           </div>

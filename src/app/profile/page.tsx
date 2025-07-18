@@ -3,6 +3,8 @@
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { heroClasses } from '@/lib/heroClasses'
+import { getCurrentLevel, getNextLevel, getLevelProgress } from '@/lib/heroLevels'
 
 interface UserStats {
   totalQuests: number
@@ -13,18 +15,9 @@ interface UserStats {
 }
 
 export default function Profile() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [stats, setStats] = useState<UserStats | null>(null)
   const [loading, setLoading] = useState(true)
-
-  const heroClasses = {
-    Warrior: { label: 'Воїн', emoji: '⚔️', color: 'text-red-400', description: 'Сильний у ближньому бою' },
-    Mage: { label: 'Маг', emoji: '🔮', color: 'text-blue-400', description: 'Використовує магію' },
-    Rogue: { label: 'Розбійник', emoji: '🗡️', color: 'text-purple-400', description: 'Майстер скритності' },
-    Cleric: { label: 'Жрець', emoji: '⛪', color: 'text-white', description: 'Зцілює та захищає' },
-    Ranger: { label: 'Рейнджер', emoji: '🏹', color: 'text-green-400', description: 'Експерт з лука' },
-    Paladin: { label: 'Паладін', emoji: '🛡️', color: 'text-yellow-400', description: 'Святий воїн' }
-  }
 
   useEffect(() => {
     if (session) {
@@ -46,6 +39,29 @@ export default function Profile() {
     }
   }
 
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 relative">
+            <div className="absolute inset-0 animate-spin">
+              <div className="w-full h-full border-4 border-transparent border-t-yellow-400 border-r-blue-400 rounded-full"></div>
+            </div>
+            <div className="absolute inset-2 bg-gray-800 rounded-full flex items-center justify-center">
+              <span className="text-yellow-400 text-xs font-bold">⚔️</span>
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-yellow-400 mb-2">
+            Завантаження пригод...
+          </h2>
+          <p className="text-gray-300">
+            Готуємо світ для твоїх героїв
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   if (!session) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -61,6 +77,9 @@ export default function Profile() {
   }
 
   const heroClass = heroClasses[session.user.heroClass as keyof typeof heroClasses]
+  const currentLevel = getCurrentLevel(session.user.heroClass || 'Warrior', stats?.totalExperience || 0)
+  const nextLevel = getNextLevel(session.user.heroClass || 'Warrior', stats?.totalExperience || 0)
+  const levelProgress = getLevelProgress(session.user.heroClass || 'Warrior', stats?.totalExperience || 0)
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -76,15 +95,15 @@ export default function Profile() {
                 {session.user.heroName || session.user.name}
               </h1>
               <div className="text-lg text-gray-300 mb-2">
-                {heroClass?.label} • Рівень {session.user.heroLevel}
+                {heroClass?.label} • {currentLevel.title}
               </div>
-              <p className="text-gray-400">
-                {heroClass?.description}
-              </p>
+              <div className="text-sm text-gray-400">
+                {currentLevel.description}
+              </div>
             </div>
             <div className="text-right">
               <div className="text-2xl text-yellow-400 font-bold">
-                {session.user.heroLevel}
+                {currentLevel.level}
               </div>
               <div className="text-sm text-gray-400">Рівень</div>
             </div>
@@ -93,11 +112,30 @@ export default function Profile() {
 
         {/* Stats Grid */}
         {loading ? (
-          <div className="text-center py-8">
-            <div className="text-yellow-400 text-xl">Завантаження статистики...</div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+            <div className="bg-gray-800 bg-opacity-50 rounded-lg p-6 text-center">
+              <div className="h-8 bg-gray-700 rounded animate-pulse mb-2"></div>
+              <div className="h-4 bg-gray-700 rounded animate-pulse"></div>
+            </div>
+            <div className="bg-gray-800 bg-opacity-50 rounded-lg p-6 text-center">
+              <div className="h-8 bg-gray-700 rounded animate-pulse mb-2"></div>
+              <div className="h-4 bg-gray-700 rounded animate-pulse"></div>
+            </div>
+            <div className="bg-gray-800 bg-opacity-50 rounded-lg p-6 text-center">
+              <div className="h-8 bg-gray-700 rounded animate-pulse mb-2"></div>
+              <div className="h-4 bg-gray-700 rounded animate-pulse"></div>
+            </div>
+            <div className="bg-gray-800 bg-opacity-50 rounded-lg p-6 text-center">
+              <div className="h-8 bg-gray-700 rounded animate-pulse mb-2"></div>
+              <div className="h-4 bg-gray-700 rounded animate-pulse"></div>
+            </div>
+            <div className="bg-gray-800 bg-opacity-50 rounded-lg p-6 text-center">
+              <div className="h-8 bg-gray-700 rounded animate-pulse mb-2"></div>
+              <div className="h-4 bg-gray-700 rounded animate-pulse"></div>
+            </div>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
             <div className="bg-gray-800 bg-opacity-50 rounded-lg p-6 text-center">
               <div className="text-3xl text-blue-400 font-bold mb-2">
                 {stats?.totalQuests || 0}
@@ -121,6 +159,13 @@ export default function Profile() {
             
             <div className="bg-gray-800 bg-opacity-50 rounded-lg p-6 text-center">
               <div className="text-3xl text-purple-400 font-bold mb-2">
+                {stats?.totalExperience || 0}
+              </div>
+              <div className="text-gray-300">⭐ Досвід</div>
+            </div>
+            
+            <div className="bg-gray-800 bg-opacity-50 rounded-lg p-6 text-center">
+              <div className="text-3xl text-orange-400 font-bold mb-2">
                 {stats?.friendsCount || 0}
               </div>
               <div className="text-gray-300">Друзів</div>
@@ -135,14 +180,23 @@ export default function Profile() {
             <div 
               className="bg-gradient-to-r from-blue-500 to-purple-600 h-4 rounded-full transition-all duration-300"
               style={{ 
-                width: `${((session.user.heroLevel || 0) % 100)}%` 
+                width: `${levelProgress}%` 
               }}
             ></div>
           </div>
           <div className="flex justify-between text-sm text-gray-400">
-            <span>Рівень {session.user.heroLevel}</span>
-            <span>{session.user.heroLevel || 0} / 100 досвіду</span>
+            <span>{currentLevel.title}</span>
+            {nextLevel ? (
+              <span>{stats?.totalExperience || 0} / {nextLevel.experienceRequired} досвіду</span>
+            ) : (
+              <span>Максимальний рівень досягнуто!</span>
+            )}
           </div>
+          {nextLevel && (
+            <div className="text-xs text-gray-500 mt-2">
+              Наступний рівень: {nextLevel.title}
+            </div>
+          )}
         </div>
 
         {/* Quick Actions */}
@@ -155,13 +209,7 @@ export default function Profile() {
             <div>Створити Квест</div>
           </Link>
           
-          <Link
-            href="/quests/create?assignTo=self"
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-6 rounded-lg transition-colors text-center"
-          >
-            <div className="text-2xl mb-2">🎯</div>
-            <div>Квест для Себе</div>
-          </Link>
+
           
           <Link
             href="/quests/my"

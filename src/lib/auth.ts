@@ -42,6 +42,8 @@ export const authOptions: NextAuthOptions = {
           heroName: user.heroName,
           heroClass: user.heroClass,
           heroLevel: user.heroLevel,
+          experience: user.experience,
+          gold: user.gold,
           hasSeenTutorial: user.hasSeenTutorial,
         }
       }
@@ -51,13 +53,23 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt"
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.heroName = user.heroName
         token.heroClass = user.heroClass
         token.heroLevel = user.heroLevel
+        token.experience = user.experience
+        token.gold = user.gold
         token.hasSeenTutorial = user.hasSeenTutorial
       }
+      
+      // Оновлюємо токен при зміні сесії
+      if (trigger === "update" && session) {
+        token.heroLevel = session.user.heroLevel
+        token.experience = session.user.experience
+        token.gold = session.user.gold
+      }
+      
       return token
     },
     async session({ session, token }) {
@@ -66,6 +78,8 @@ export const authOptions: NextAuthOptions = {
         session.user.heroName = token.heroName
         session.user.heroClass = token.heroClass
         session.user.heroLevel = token.heroLevel
+        session.user.experience = token.experience
+        session.user.gold = token.gold
         session.user.hasSeenTutorial = token.hasSeenTutorial
       }
       return session
