@@ -42,6 +42,7 @@ export const authOptions: NextAuthOptions = {
           heroName: user.heroName,
           heroClass: user.heroClass,
           heroLevel: user.heroLevel,
+          hasSeenTutorial: user.hasSeenTutorial,
         }
       }
     })
@@ -55,6 +56,7 @@ export const authOptions: NextAuthOptions = {
         token.heroName = user.heroName
         token.heroClass = user.heroClass
         token.heroLevel = user.heroLevel
+        token.hasSeenTutorial = user.hasSeenTutorial
       }
       return token
     },
@@ -64,6 +66,7 @@ export const authOptions: NextAuthOptions = {
         session.user.heroName = token.heroName
         session.user.heroClass = token.heroClass
         session.user.heroLevel = token.heroLevel
+        session.user.hasSeenTutorial = token.hasSeenTutorial
       }
       return session
     }

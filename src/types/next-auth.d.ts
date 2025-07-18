@@ -10,6 +10,7 @@ declare module "next-auth" {
       heroName?: string | null
       heroClass?: string | null
       heroLevel?: number
+      hasSeenTutorial?: boolean
     }
   }
 
@@ -21,6 +22,7 @@ declare module "next-auth" {
     heroName?: string | null
     heroClass?: string | null
     heroLevel?: number
+    hasSeenTutorial?: boolean
   }
 }
 
@@ -29,5 +31,6 @@ declare module "next-auth/jwt" {
     heroName?: string | null
     heroClass?: string | null
     heroLevel?: number
+    hasSeenTutorial?: boolean
   }
 } 
