@@ -368,8 +368,13 @@ export default function CreateQuestForm() {
                         type="datetime-local"
                         value={formData.dueDate}
                         onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                        className="w-full p-3 bg-[#1a1d29] rounded-lg text-gray-100 focus:outline-none transition-colors"
+                        className="w-full p-3 pr-10 bg-[#1a1d29] rounded-lg text-gray-100 focus:outline-none transition-colors [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-datetime-edit]:text-gray-100"
                       />
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                        <svg className="w-4 h-4 text-[#a48fff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
                     </div>
                   </div>
                 </div>
