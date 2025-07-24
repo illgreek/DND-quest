@@ -59,7 +59,7 @@ export const getThemeColors = (themeType: string, heroClass?: string) => {
   return {
     '--class-primary': '#624cab',
     '--class-secondary': '#a48fff',
-    '--class-accent': '#3d2b6b',
+    '--class-accent': '#a48fff',
     '--class-highlight': '#fef2f2',
     '--class-text': '#d4c6ff',
     '--class-bg': '#1f1f1f',
