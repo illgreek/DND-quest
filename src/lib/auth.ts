@@ -61,6 +61,11 @@ export const authOptions: NextAuthOptions = {
         token.experience = user.experience
         token.gold = user.gold
         token.hasSeenTutorial = user.hasSeenTutorial
+        
+        console.log('NextAuth JWT callback - user data:', {
+          userId: user.id,
+          hasSeenTutorial: user.hasSeenTutorial
+        })
       }
       
       // Оновлюємо токен при зміні сесії
@@ -68,6 +73,12 @@ export const authOptions: NextAuthOptions = {
         token.heroLevel = session.user.heroLevel
         token.experience = session.user.experience
         token.gold = session.user.gold
+        token.hasSeenTutorial = session.user.hasSeenTutorial
+        
+        console.log('NextAuth JWT callback - session update:', {
+          userId: token.sub,
+          hasSeenTutorial: session.user.hasSeenTutorial
+        })
       }
       
       return token
@@ -81,6 +92,12 @@ export const authOptions: NextAuthOptions = {
         session.user.experience = token.experience
         session.user.gold = token.gold
         session.user.hasSeenTutorial = token.hasSeenTutorial
+        
+        console.log('NextAuth session callback:', {
+          userId: session.user.id,
+          hasSeenTutorial: session.user.hasSeenTutorial,
+          tokenHasSeenTutorial: token.hasSeenTutorial
+        })
       }
       return session
     }

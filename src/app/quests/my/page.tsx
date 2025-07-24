@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { getHeroClassLabel } from '@/lib/heroClasses'
 import { SearchIcon, FilterIcon, PlusIcon, ClockIcon, CheckIcon, XIcon, SparklesIcon, SwordIcon, CoinsIcon, UserIcon, ArrowLeftIcon } from 'lucide-react'
+import { getCurrentLevel, getNextLevel, getLevelProgress } from '@/lib/heroLevels'
 
 interface Quest {
   id: string
@@ -39,19 +40,31 @@ interface Quest {
 type TabType = 'all' | 'assigned' | 'created'
 
 export default function MyQuests() {
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
   const pathname = usePathname()
+  const router = useRouter()
   const [quests, setQuests] = useState<Quest[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [activeTab, setActiveTab] = useState<TabType>('all')
   const [error, setError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
   useEffect(() => {
     if (session) {
       fetchQuests()
     }
   }, [session, activeTab])
+
+  // Слухаємо події оновлення сесії
+  useEffect(() => {
+    const handleSessionUpdate = async () => {
+      await update()
+    }
+
+    window.addEventListener('session-updated', handleSessionUpdate)
+    return () => window.removeEventListener('session-updated', handleSessionUpdate)
+  }, [update])
 
   const fetchQuests = async () => {
     try {
@@ -79,6 +92,9 @@ export default function MyQuests() {
         method: 'POST'
       })
       if (response.ok) {
+        setError('')
+        setSuccessMessage('Квест успішно прийнято!')
+        setTimeout(() => setSuccessMessage(''), 3000)
         fetchQuests()
       }
     } catch (err) {
@@ -92,6 +108,46 @@ export default function MyQuests() {
         method: 'POST'
       })
       if (response.ok) {
+        const result = await response.json()
+        
+        // Оновлюємо сесію з новими даними користувача
+        if (result.user) {
+          // Очищаємо попередні помилки
+          setError('')
+          
+          // Показуємо повідомлення про успіх
+          setSuccessMessage(`Квест завершено! +${result.rewards.experience} XP, +${result.rewards.gold} золота`)
+          
+          // Очищаємо повідомлення через 3 секунди
+          setTimeout(() => setSuccessMessage(''), 3000)
+          
+          // Оновлюємо сесію з новими даними
+          await update({
+            ...session,
+            user: {
+              ...session?.user,
+              experience: result.user.experience,
+              gold: result.user.gold,
+              heroLevel: result.user.heroLevel
+            }
+          })
+          
+          console.log('Updated session with:', {
+            experience: result.user.experience,
+            gold: result.user.gold,
+            heroLevel: result.user.heroLevel,
+            levelUp: result.rewards.levelUp
+          })
+          
+          // Викликаємо подію оновлення сесії
+          window.dispatchEvent(new Event('session-updated'))
+          
+          // Невелика затримка для забезпечення оновлення сесії
+          setTimeout(() => {
+            router.refresh()
+          }, 100)
+        }
+        
         fetchQuests()
       }
     } catch (err) {
@@ -105,6 +161,9 @@ export default function MyQuests() {
         method: 'POST'
       })
       if (response.ok) {
+        setError('')
+        setSuccessMessage('Квест успішно скасовано!')
+        setTimeout(() => setSuccessMessage(''), 3000)
         fetchQuests()
       }
     } catch (err) {
@@ -261,6 +320,12 @@ export default function MyQuests() {
           {error && (
             <div className="bg-red-600 text-white p-4 rounded-lg mb-6 border border-red-500">
               {error}
+            </div>
+          )}
+
+          {successMessage && (
+            <div className="bg-green-600 text-white p-4 rounded-lg mb-6 border border-green-500">
+              {successMessage}
             </div>
           )}
 

@@ -5,6 +5,7 @@ import { useSession, signOut } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { getHeroClassLabel, getHeroClassEmoji } from '@/lib/heroClasses'
+import { getCurrentLevel, getNextLevel, getLevelProgress } from '@/lib/heroLevels'
 import { HomeIcon, ScrollIcon, PlusIcon, UserIcon, UsersIcon, LogOutIcon, SettingsIcon } from 'lucide-react'
 
 interface Friendship {
@@ -15,7 +16,7 @@ interface Friendship {
 }
 
 export default function Navigation() {
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
   const pathname = usePathname()
   const router = useRouter()
   const [pendingRequests, setPendingRequests] = useState<Friendship[]>([])
@@ -48,9 +49,18 @@ export default function Navigation() {
       fetchPendingRequests()
     }
 
+    const handleSessionUpdate = async () => {
+      await update()
+    }
+
     window.addEventListener('friendship-updated', handleFriendshipUpdate)
-    return () => window.removeEventListener('friendship-updated', handleFriendshipUpdate)
-  }, [session])
+    window.addEventListener('session-updated', handleSessionUpdate)
+    
+    return () => {
+      window.removeEventListener('friendship-updated', handleFriendshipUpdate)
+      window.removeEventListener('session-updated', handleSessionUpdate)
+    }
+  }, [session, update])
 
   // Функція для визначення активної сторінки
   const isActivePage = (path: string) => {
@@ -134,21 +144,41 @@ export default function Navigation() {
                   <span className="mx-1">•</span>
                   <span>{getHeroClassLabel(session.user.heroClass || '')}</span>
                 </div>
+                <div className="text-xs text-[#a48fff] mt-1">
+                  {(() => {
+                    const currentLevel = getCurrentLevel(session.user.heroClass || 'Warrior', session.user.experience || 0)
+                    return currentLevel.title
+                  })()}
+                </div>
               </div>
             </div>
 
             {/* XP Progress bar */}
             <div className="mt-3">
-              <div className="flex justify-between text-xs mb-1">
-                <span className="text-[#a48fff]">Прогрес</span>
-                <span className="text-gray-400">{session.user.experience || 0} / 100 XP</span>
-              </div>
-              <div className="w-full bg-[#1a1d29] rounded-full h-2 overflow-hidden">
-                <div 
-                  className="bg-gradient-to-r from-[#624cab] to-[#a48fff] h-full rounded-full" 
-                  style={{ width: `${Math.min(((session.user.experience || 0) / 100) * 100, 100)}%` }}
-                ></div>
-              </div>
+              {(() => {
+                const heroClass = session.user.heroClass || 'Warrior'
+                const experience = session.user.experience || 0
+                const currentLevel = getCurrentLevel(heroClass, experience)
+                const nextLevel = getNextLevel(heroClass, experience)
+                const progress = getLevelProgress(heroClass, experience)
+                
+                return (
+                  <>
+                    <div className="flex justify-between text-xs mb-1">
+                      <span className="text-[#a48fff]">Прогрес</span>
+                      <span className="text-gray-400">
+                        {experience} / {nextLevel ? nextLevel.experienceRequired : currentLevel.experienceRequired} XP
+                      </span>
+                    </div>
+                    <div className="w-full bg-[#1a1d29] rounded-full h-2 overflow-hidden">
+                      <div 
+                        className="bg-gradient-to-r from-[#624cab] to-[#a48fff] h-full rounded-full transition-all duration-300" 
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                    </div>
+                  </>
+                )
+              })()}
             </div>
           </div>
         )}

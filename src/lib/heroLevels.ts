@@ -119,8 +119,15 @@ export function getNextLevel(heroClass: string, experience: number): HeroLevel |
 
 // Функція для перевірки, чи герой може підвищитися
 export function canLevelUp(heroClass: string, experience: number): boolean {
+  const currentLevel = getCurrentLevel(heroClass, experience)
   const nextLevel = getNextLevel(heroClass, experience)
-  return nextLevel !== null && experience >= nextLevel.experienceRequired
+  
+  if (!nextLevel) {
+    return false // Максимальний рівень
+  }
+  
+  // Перевіряємо, чи досвід достатній для наступного рівня
+  return experience >= nextLevel.experienceRequired
 }
 
 // Функція для отримання прогресу до наступного рівня

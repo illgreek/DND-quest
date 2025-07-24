@@ -9,7 +9,7 @@ interface TutorialModalProps {
 }
 
 export default function TutorialModal({ isOpen, onClose }: TutorialModalProps) {
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const [currentStep, setCurrentStep] = useState(0)
 
   const tutorialSteps = [
@@ -64,6 +64,16 @@ export default function TutorialModal({ isOpen, onClose }: TutorialModalProps) {
       })
 
       if (response.ok) {
+        // Оновлюємо сесію, щоб hasSeenTutorial стало true
+        if (session) {
+          await update({
+            ...session,
+            user: {
+              ...session.user,
+              hasSeenTutorial: true
+            }
+          })
+        }
         onClose()
         setCurrentStep(0)
       }
@@ -120,16 +130,37 @@ export default function TutorialModal({ isOpen, onClose }: TutorialModalProps) {
           </button>
         </div>
 
-        {currentStep === tutorialSteps.length - 1 && (
-          <div className="mt-4 text-center">
-            <button
-              onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 text-sm"
-            >
-              Пропустити мануал
-            </button>
-          </div>
-        )}
+        <div className="mt-4 text-center">
+          <button
+            onClick={async () => {
+              try {
+                const response = await fetch('/api/profile/tutorial', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                })
+
+                if (response.ok && session) {
+                  await update({
+                    ...session,
+                    user: {
+                      ...session.user,
+                      hasSeenTutorial: true
+                    }
+                  })
+                }
+                onClose()
+              } catch (error) {
+                console.error('Error marking tutorial as complete:', error)
+                onClose()
+              }
+            }}
+            className="text-gray-500 hover:text-gray-700 text-sm"
+          >
+            Пропустити мануал
+          </button>
+        </div>
       </div>
     </div>
   )

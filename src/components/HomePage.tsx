@@ -12,7 +12,15 @@ export default function HomePage() {
   const [showTutorial, setShowTutorial] = useState(false)
 
   useEffect(() => {
+    console.log('HomePage useEffect:', {
+      status,
+      hasSession: !!session,
+      hasSeenTutorial: session?.user?.hasSeenTutorial,
+      userId: session?.user?.id
+    })
+    
     if (status === 'authenticated' && session?.user && !session.user.hasSeenTutorial) {
+      console.log('Showing tutorial for user:', session.user.id)
       setShowTutorial(true)
     }
   }, [session, status])

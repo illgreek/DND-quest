@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { getHeroClassLabel, getHeroClassEmoji, heroClasses } from '@/lib/heroClasses'
+import { getCurrentLevel, getNextLevel, getLevelProgress } from '@/lib/heroLevels'
 import { UserIcon, SwordIcon, CoinsIcon, SparklesIcon, TrophyIcon, StarIcon, ShieldIcon, ZapIcon, ScrollIcon, ArrowLeftIcon } from 'lucide-react'
 import Link from 'next/link'
 
@@ -17,7 +18,7 @@ interface UserStats {
 }
 
 export default function Profile() {
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
   const pathname = usePathname()
   const [stats, setStats] = useState<UserStats | null>(null)
   const [loading, setLoading] = useState(true)
@@ -28,6 +29,20 @@ export default function Profile() {
       fetchStats()
     }
   }, [session])
+
+  // Слухаємо події оновлення сесії
+  useEffect(() => {
+    const handleSessionUpdate = async () => {
+      await update()
+      // Оновлюємо статистику після оновлення сесії
+      if (session) {
+        fetchStats()
+      }
+    }
+
+    window.addEventListener('session-updated', handleSessionUpdate)
+    return () => window.removeEventListener('session-updated', handleSessionUpdate)
+  }, [update, session])
 
   const fetchStats = async () => {
     try {
@@ -93,7 +108,9 @@ export default function Profile() {
   }
 
   const heroClass = heroClasses[session.user.heroClass as keyof typeof heroClasses]
-  const experienceToNextLevel = 100 - (session.user.experience || 0) % 100
+  const currentLevel = getCurrentLevel(session.user.heroClass || 'Warrior', session.user.experience || 0)
+  const nextLevel = getNextLevel(session.user.heroClass || 'Warrior', session.user.experience || 0)
+  const progress = getLevelProgress(session.user.heroClass || 'Warrior', session.user.experience || 0)
 
   return (
     <div className="min-h-screen bg-[#1a1b26] text-gray-100 relative overflow-hidden">
@@ -201,7 +218,7 @@ export default function Profile() {
                   <h2 className="text-3xl font-bold text-[#d4c6ff] mb-2">
                     {session.user.heroName || session.user.name}
                   </h2>
-                  <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
+                  <div className="flex items-center justify-center md:justify-start gap-4 mb-2">
                     <span className="text-[#a48fff] font-bold">
                       Рівень {session.user.heroLevel}
                     </span>
@@ -210,17 +227,24 @@ export default function Profile() {
                       {getHeroClassLabel(session.user.heroClass || '')}
                     </span>
                   </div>
+                  
+                  {/* Hero Title */}
+                  <div className="text-center md:text-left mb-4">
+                    <span className="text-lg text-[#d4c6ff] font-medium">
+                      {currentLevel.title}
+                    </span>
+                  </div>
 
                   {/* XP Progress */}
                   <div className="mb-4">
                     <div className="flex justify-between text-sm mb-1">
                       <span className="text-[#a48fff]">Прогрес до наступного рівня</span>
-                      <span className="text-gray-400">{session.user.experience || 0} / {session.user.experience || 0 + experienceToNextLevel} XP</span>
+                      <span className="text-gray-400">{session.user.experience || 0} / {nextLevel ? nextLevel.experienceRequired : currentLevel.experienceRequired} XP</span>
                     </div>
                     <div className="w-full bg-[#1a1d29] rounded-full h-3 overflow-hidden border border-[#4a4257]">
                       <div 
                         className="bg-gradient-to-r from-[#624cab] to-[#a48fff] h-full rounded-full transition-all duration-500 shadow-lg" 
-                        style={{ width: `${((session.user.experience || 0) % 100)}%` }}
+                        style={{ width: `${progress}%` }}
                       ></div>
                     </div>
                   </div>

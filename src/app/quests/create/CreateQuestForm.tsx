@@ -68,6 +68,28 @@ export default function CreateQuestForm() {
     fetchFriends()
   }, [])
 
+  // Перевіряємо URL параметри для автоматичного вибору друга
+  useEffect(() => {
+    const assignToParam = searchParams.get('assignTo')
+    console.log('CreateQuestForm - URL params:', {
+      assignToParam,
+      allParams: Object.fromEntries(searchParams.entries())
+    })
+    
+    if (assignToParam && assignToParam !== 'self') {
+      console.log('Auto-assigning quest to:', assignToParam)
+      setFormData(prev => ({
+        ...prev,
+        assignTo: assignToParam
+      }))
+    }
+  }, [searchParams])
+
+  // Логуємо зміни в formData.assignTo
+  useEffect(() => {
+    console.log('FormData assignTo changed:', formData.assignTo)
+  }, [formData.assignTo])
+
   const fetchFriends = async () => {
     try {
       setLoadingFriends(true)
@@ -75,6 +97,18 @@ export default function CreateQuestForm() {
       if (response.ok) {
         const data = await response.json()
         setFriends(data)
+        console.log('Friends loaded:', data.length, 'friends')
+        
+        // Перевіряємо, чи потрібно встановити assignTo після завантаження друзів
+        const assignToParam = searchParams.get('assignTo')
+        if (assignToParam && assignToParam !== 'self') {
+          const friendExists = data.some((friend: Friend) => friend.id === assignToParam)
+          console.log('Friend exists check:', {
+            assignToParam,
+            friendExists,
+            friendIds: data.map((f: Friend) => f.id)
+          })
+        }
       }
     } catch (error) {
       console.error('Error fetching friends:', error)
@@ -88,6 +122,8 @@ export default function CreateQuestForm() {
     setLoading(true)
     setError('')
 
+    console.log('Submitting quest with data:', formData)
+
     try {
       const response = await fetch('/api/quests', {
         method: 'POST',
@@ -98,6 +134,8 @@ export default function CreateQuestForm() {
       })
 
       if (response.ok) {
+        const result = await response.json()
+        console.log('Quest created successfully:', result)
         router.push('/quests/my')
       } else {
         const data = await response.json()
@@ -414,7 +452,13 @@ export default function CreateQuestForm() {
                   <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
                     <select
                       value={formData.assignTo}
-                      onChange={(e) => setFormData({ ...formData, assignTo: e.target.value })}
+                      onChange={(e) => {
+                        console.log('Select changed:', {
+                          from: formData.assignTo,
+                          to: e.target.value
+                        })
+                        setFormData({ ...formData, assignTo: e.target.value })
+                      }}
                       className="w-full p-3 pr-8 bg-[#1a1d29] rounded-lg text-gray-100 focus:outline-none transition-colors appearance-none"
                     >
                       <option value="self">Собі (я буду виконувати)</option>
@@ -452,6 +496,14 @@ export default function CreateQuestForm() {
                 {formData.assignTo && formData.assignTo !== 'self' && (
                   <p className="text-sm text-[#a48fff] mt-2">
                     📤 Квест буде надіслано вашому другу. Він зможе його прийняти!
+                    {(() => {
+                      const selectedFriend = friends.find(f => f.id === formData.assignTo)
+                      return selectedFriend ? (
+                        <span className="block mt-1 text-emerald-400">
+                          Обрано: {selectedFriend.heroName || selectedFriend.name}
+                        </span>
+                      ) : null
+                    })()}
                   </p>
                 )}
               </div>

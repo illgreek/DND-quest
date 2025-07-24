@@ -11,6 +11,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    console.log('Marking tutorial as complete for user:', session.user.id)
+
     const updatedUser = await prisma.user.update({
       where: {
         id: session.user.id
@@ -19,6 +21,8 @@ export async function POST(request: NextRequest) {
         hasSeenTutorial: true
       }
     })
+
+    console.log('Tutorial marked as complete for user:', updatedUser.id)
 
     return NextResponse.json({ success: true, user: updatedUser })
   } catch (error) {
