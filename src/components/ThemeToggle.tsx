@@ -105,9 +105,22 @@ export default function ThemeToggle() {
         <div 
           className={`relative p-3 rounded-lg border-2 cursor-pointer transition-all ${
             currentTheme === 'CLASS' 
-              ? `border-[${palette.primary}] bg-[#252838]` 
-              : 'border-[#4a4257] bg-[#1a1d29] hover:border-[${palette.primary}]'
+              ? 'bg-[#252838]' 
+              : 'border-[#4a4257] bg-[#1a1d29]'
           }`}
+          style={{
+            borderColor: currentTheme === 'CLASS' ? palette.secondary : undefined
+          }}
+          onMouseEnter={(e) => {
+            if (currentTheme !== 'CLASS') {
+              e.currentTarget.style.borderColor = palette.primary
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (currentTheme !== 'CLASS') {
+              e.currentTarget.style.borderColor = '#4a4257'
+            }
+          }}
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()

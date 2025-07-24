@@ -4,7 +4,7 @@ import SignInForm from './SignInForm'
 
 export default function SignIn() {
   return (
-    <div className="min-h-screen bg-theme-background text-gray-100 relative overflow-hidden flex items-center justify-center">
+    <div className="min-h-screen bg-theme-background text-gray-100 relative overflow-hidden flex items-center justify-center pb-20 lg:pb-0">
       {/* Background decorative elements */}
       {/* Floating magical orbs */}
       <div className="absolute top-32 left-8 w-2 h-2 bg-theme-primary rounded-full opacity-15 animate-pulse animation-delay-1000"></div>
@@ -39,10 +39,10 @@ export default function SignIn() {
 
       <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-100 mb-2 drop-shadow-lg">
+          <h1 className="text-4xl font-bold text-gray-100 mb-2 drop-shadow-lg lg:bg-transparent bg-theme-surface lg:bg-opacity-0 bg-opacity-90 px-4 py-2 rounded-lg">
             Вітаємо назад!
           </h1>
-          <p className="text-xl text-gray-300">
+          <p className="text-xl text-gray-300 lg:bg-transparent bg-theme-surface lg:bg-opacity-0 bg-opacity-90 px-4 py-2 rounded-lg">
             Увійдіть у світ епічних пригод
           </p>
         </div>

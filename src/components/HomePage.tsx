@@ -50,7 +50,7 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="min-h-screen bg-theme-background text-gray-100 relative overflow-hidden">
+      <div className="min-h-screen bg-theme-background text-gray-100 relative overflow-hidden pb-20 lg:pb-0">
         {/* Background decorative elements */}
         {/* Floating magical orbs - more spread out and darker */}
         <div className="absolute top-32 left-8 w-2 h-2 bg-theme-primary rounded-full opacity-15 animate-pulse animation-delay-1000"></div>
@@ -110,12 +110,12 @@ export default function HomePage() {
         <div className="container mx-auto px-4 py-16 relative z-10">
           <div className="text-center">
             <div className="flex items-center justify-center mb-6">
-              <h1 className="text-6xl font-bold text-gray-100 drop-shadow-lg">
+              <h1 className="text-6xl font-bold text-gray-100 drop-shadow-lg lg:bg-transparent bg-theme-surface lg:bg-opacity-0 bg-opacity-90 px-4 py-2 rounded-lg">
                 DND Quests
               </h1>
               <div className="ml-2 text-4xl text-theme-accent opacity-80">⚔️</div>
             </div>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto lg:bg-transparent bg-theme-surface lg:bg-opacity-0 bg-opacity-90 px-4 py-2 rounded-lg">
               Перетвори свої щоденні справи на епічні квести! 
               Створюй завдання, знаходь героїв та виконуй місії разом з друзями.
             </p>
@@ -316,7 +316,7 @@ export default function HomePage() {
                 <div className="absolute bottom-2 right-2 w-1 h-1 bg-theme-accent rounded-full animate-pulse animation-delay-400"></div>
                 
                 <div className="text-5xl mb-6">⚔️</div>
-                <h3 className="text-xl font-bold text-gray-100 mb-4">Створюй Квести</h3>
+                <h3 className="text-xl font-bold text-gray-100 mb-4 lg:bg-transparent bg-theme-surface lg:bg-opacity-0 bg-opacity-90 px-2 py-1 rounded">Створюй Квести</h3>
                 <p className="text-gray-300 leading-relaxed">
                   Перетвори будь-яку справу на епічну місію з нагородами та досвідом
                 </p>
@@ -379,7 +379,7 @@ export default function HomePage() {
                 <div className="absolute bottom-2 right-2 w-1 h-1 bg-theme-accent rounded-full animate-pulse animation-delay-400"></div>
                 
                 <div className="text-5xl mb-6">👥</div>
-                <h3 className="text-xl font-bold text-gray-100 mb-4">Знаходь Героїв</h3>
+                <h3 className="text-xl font-bold text-gray-100 mb-4 lg:bg-transparent bg-theme-surface lg:bg-opacity-0 bg-opacity-90 px-2 py-1 rounded">Знаходь Героїв</h3>
                 <p className="text-gray-300 leading-relaxed">
                   Додавай друзів та делегуй квести тим, хто може їх виконати
                 </p>
@@ -442,7 +442,7 @@ export default function HomePage() {
                 <div className="absolute bottom-2 right-2 w-1 h-1 bg-theme-accent rounded-full animate-pulse animation-delay-400"></div>
                 
                 <div className="text-5xl mb-6">🏆</div>
-                <h3 className="text-xl font-bold text-gray-100 mb-4">Заробляй Нагороди</h3>
+                <h3 className="text-xl font-bold text-gray-100 mb-4 lg:bg-transparent bg-theme-surface lg:bg-opacity-0 bg-opacity-90 px-2 py-1 rounded">Заробляй Нагороди</h3>
                 <p className="text-gray-300 leading-relaxed">
                   Отримуй золото, досвід та підвищуй свій рівень героя
                 </p>

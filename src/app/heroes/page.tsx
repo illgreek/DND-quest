@@ -197,7 +197,7 @@ export default function Heroes() {
   }
 
   return (
-    <div className="min-h-screen bg-theme-background text-gray-100 relative overflow-hidden">
+          <div className="min-h-screen bg-theme-background text-gray-100 relative overflow-hidden pb-20 lg:pb-0">
       {/* Background decorative elements */}
       {/* Floating magical orbs */}
       <div className="absolute top-32 left-8 w-2 h-2 bg-theme-primary rounded-full opacity-15 animate-pulse animation-delay-1000"></div>
@@ -241,12 +241,12 @@ export default function Heroes() {
               >
                 <ArrowLeftIcon size={20} className="text-theme-accent" />
               </Link>
-              <h1 className="text-4xl font-bold text-gray-100 drop-shadow-lg">
+              <h1 className="text-4xl font-bold text-gray-100 drop-shadow-lg lg:bg-transparent bg-theme-surface lg:bg-opacity-0 bg-opacity-90 px-4 py-2 rounded-lg">
                 Герої
               </h1>
               <div className="ml-2 text-3xl text-theme-accent opacity-80">⚔️</div>
             </div>
-            <p className="text-xl text-gray-300">
+            <p className="text-xl text-gray-300 lg:bg-transparent bg-theme-surface lg:bg-opacity-0 bg-opacity-90 px-4 py-2 rounded-lg">
               Знайди союзників та керуй своєю командою!
             </p>
           </div>

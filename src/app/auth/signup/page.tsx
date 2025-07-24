@@ -54,13 +54,69 @@ export default function SignUp() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-theme-background text-gray-100 relative overflow-hidden flex items-center justify-center pt-16 pb-20 lg:pb-0">
+      {/* Background decorative elements */}
+      {/* Floating magical orbs - more spread out and darker */}
+      <div className="absolute top-32 left-8 w-2 h-2 bg-theme-primary rounded-full opacity-15 animate-pulse animation-delay-1000"></div>
+      <div className="absolute top-16 right-12 w-1 h-1 bg-theme-accent rounded-full opacity-20 animate-pulse animation-delay-1500"></div>
+      <div className="absolute bottom-32 left-16 w-3 h-3 bg-theme-accent rounded-full opacity-10 animate-pulse animation-delay-800"></div>
+      <div className="absolute bottom-16 right-8 w-1 h-1 bg-theme-text rounded-full opacity-15 animate-pulse animation-delay-1200"></div>
+      <div className="absolute top-1/4 left-1/6 w-1 h-1 bg-theme-primary rounded-full opacity-12 animate-pulse animation-delay-600"></div>
+      <div className="absolute top-3/4 right-1/6 w-2 h-2 bg-theme-accent rounded-full opacity-8 animate-pulse animation-delay-900"></div>
+      
+      {/* Mystical runes and symbols - more spread out and darker */}
+      <div className="absolute top-24 left-1/4 text-theme-primary opacity-6 text-4xl font-bold">⚔️</div>
+      <div className="absolute bottom-24 right-1/3 text-theme-accent opacity-5 text-3xl">🏰</div>
+      <div className="absolute top-1/3 left-12 text-theme-accent opacity-8 text-2xl">🗡️</div>
+      <div className="absolute bottom-1/4 right-12 text-theme-text opacity-7 text-3xl">🛡️</div>
+      
+      {/* Subtle grid pattern - even more subtle */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-px bg-grid-theme"></div>
+        <div className="absolute top-1/4 left-0 w-full h-px bg-grid-theme"></div>
+        <div className="absolute top-1/2 left-0 w-full h-px bg-grid-theme"></div>
+        <div className="absolute top-3/4 left-0 w-full h-px bg-grid-theme"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-grid-theme"></div>
+        
+        <div className="absolute top-0 left-0 w-px h-full bg-grid-theme"></div>
+        <div className="absolute top-0 left-1/4 w-px h-full bg-grid-theme"></div>
+        <div className="absolute top-0 left-1/2 w-px h-full bg-grid-theme"></div>
+        <div className="absolute top-0 left-3/4 w-px h-full bg-grid-theme"></div>
+        <div className="absolute top-0 right-0 w-px h-full bg-grid-theme"></div>
+      </div>
+      
+      {/* Corner decorative elements - thinner and darker */}
+      <div className="absolute top-0 left-0 w-24 h-24 border-l border-t border-theme-primary opacity-12"></div>
+      <div className="absolute top-0 right-0 w-24 h-24 border-r border-t border-theme-primary opacity-12"></div>
+      <div className="absolute bottom-0 left-0 w-24 h-24 border-l border-b border-theme-primary opacity-12"></div>
+      <div className="absolute bottom-0 right-0 w-24 h-24 border-r border-b border-theme-primary opacity-12"></div>
+      
+      {/* Floating particles - more spread out and darker */}
+      <div className="absolute top-20 left-1/4 w-1 h-1 bg-theme-accent rounded-full opacity-10 animate-pulse animation-delay-300"></div>
+      <div className="absolute top-28 right-1/5 w-1 h-1 bg-theme-text rounded-full opacity-8 animate-pulse animation-delay-700"></div>
+      <div className="absolute bottom-20 left-1/5 w-1 h-1 bg-theme-primary rounded-full opacity-12 animate-pulse animation-delay-500"></div>
+      <div className="absolute bottom-28 right-1/4 w-1 h-1 bg-theme-accent rounded-full opacity-6 animate-pulse animation-delay-1000"></div>
+      <div className="absolute top-2/3 left-1/5 w-1 h-1 bg-theme-text rounded-full opacity-9 animate-pulse animation-delay-400"></div>
+      <div className="absolute top-1/3 right-1/5 w-1 h-1 bg-theme-primary rounded-full opacity-11 animate-pulse animation-delay-800"></div>
+      
+      {/* Additional mystical elements - more central and darker */}
+      <div className="absolute top-1/5 left-1/6 text-theme-accent opacity-5 text-xl">⚜️</div>
+      <div className="absolute top-10 left-24 text-theme-primary opacity-6 text-2xl">🔮</div>
+      <div className="absolute top-2/3 left-1/4 text-theme-accent opacity-4 text-lg">⚡</div>
+      <div className="absolute bottom-2/3 right-1/4 text-theme-text opacity-5 text-xl">🌟</div>
+      
+      {/* Subtle corner runes - smaller and darker */}
+      <div className="absolute top-6 left-6 text-theme-primary opacity-8 text-sm">⚔</div>
+      <div className="absolute top-6 right-6 text-theme-accent opacity-6 text-sm">🛡</div>
+      <div className="absolute bottom-6 left-6 text-theme-accent opacity-7 text-sm">⚜</div>
+      <div className="absolute bottom-6 right-6 text-theme-text opacity-9 text-sm">🗡</div>
+
+      <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-100 mb-2">
+          <h1 className="text-4xl font-bold text-gray-100 mb-2 lg:bg-transparent bg-theme-surface lg:bg-opacity-0 bg-opacity-90 px-4 py-2 rounded-lg">
             Створити Героя
           </h1>
-          <p className="text-gray-300">
+          <p className="text-gray-300 lg:bg-transparent bg-theme-surface lg:bg-opacity-0 bg-opacity-90 px-4 py-2 rounded-lg">
             Приєднуйся до епічних пригод!
           </p>
         </div>
