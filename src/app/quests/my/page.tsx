@@ -19,6 +19,8 @@ interface Quest {
   dueDate?: string
   isUrgent: boolean
   createdAt: string
+  creatorId: string
+  receiverId?: string
   creator: {
     id: string
     name?: string
