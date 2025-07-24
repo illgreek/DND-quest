@@ -55,32 +55,112 @@ export default function HomePage() {
             
             {session ? (
               <div className="space-y-4">
-                <div className="card-magical-border">
-                  <div className="card-magical-content p-6 max-w-lg mx-auto">
+                <div className="relative mb-4 rounded-lg overflow-hidden max-w-lg mx-auto">
+                  {/* Decorative border with magical effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                    {/* Top-right corner decoration */}
+                    <div className="absolute top-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-bl-lg border-b border-l border-[#7a63d4]">
+                      <SparklesIcon size={14} className="text-[#a48fff]" />
+                    </div>
+                    {/* Top-left corner decoration */}
+                    <div className="absolute top-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-br-lg border-b border-r border-[#7a63d4]">
+                      <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                    </div>
+                    {/* Bottom-right corner decoration */}
+                    <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tl-lg border-t border-l border-[#7a63d4]">
+                      <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                    </div>
+                    {/* Bottom-left corner decoration */}
+                    <div className="absolute bottom-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tr-lg border-t border-r border-[#7a63d4]">
+                      <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                    </div>
+                    {/* Magical sparkles - edge decorations */}
+                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                    <div className="absolute top-1/2 left-1/3 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-500"></div>
+                    
+                    {/* Additional edge decorations */}
+                    <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                    <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                    <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                    <div className="absolute bottom-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-600"></div>
+                    
+                    {/* Middle edge decorations */}
+                    <div className="absolute top-1/2 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                    <div className="absolute top-1/2 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-700"></div>
+                    <div className="absolute left-1/2 top-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                    <div className="absolute left-1/2 bottom-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-500"></div>
+                    
+                    {/* Quarter edge decorations */}
+                    <div className="absolute top-1/4 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-150"></div>
+                    <div className="absolute top-1/4 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-450"></div>
+                    <div className="absolute bottom-1/4 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-250"></div>
+                    <div className="absolute bottom-1/4 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-550"></div>
+                    
+                    {/* Diagonal sparkles */}
+                    <div className="absolute top-1/3 left-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                    <div className="absolute top-2/3 right-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                    <div className="absolute bottom-1/3 left-2/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-300"></div>
+                    <div className="absolute top-2/3 left-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-600"></div>
+                    
+                    {/* Floating sparkles */}
+                    <div className="absolute top-3 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-200"></div>
+                    <div className="absolute top-3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-500"></div>
+                    <div className="absolute bottom-3 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-350"></div>
+                    <div className="absolute bottom-3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-650"></div>
+                    
+                    {/* Corner sparkles */}
+                    <div className="absolute top-4 left-4 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                    <div className="absolute top-4 right-4 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                    <div className="absolute bottom-4 left-4 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                    <div className="absolute bottom-4 right-4 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-500"></div>
+                  </div>
+                  {/* Card content */}
+                  <div className="bg-[#252838] p-6 rounded-lg relative z-10">
+                    {/* Inner decorative sparkles */}
+                    <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                    <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-300"></div>
+                    <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                    <div className="absolute bottom-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                    
                     <h2 className="text-2xl font-bold text-[#d4c6ff] mb-3 text-center">
                       Вітаємо, {session.user.heroName || session.user.name}! ⚔️
                     </h2>
-                    <p className="text-gray-300 mb-6 text-center text-lg">
+                    <p className="text-gray-300 mb-4 text-center text-lg">
                       Рівень: <span className="text-[#a48fff] font-bold">{session.user.heroLevel}</span> | 
                       Клас: <span className="text-[#a48fff] font-bold">{getHeroClassLabel(session.user.heroClass || '') || 'Новичок'}</span>
                     </p>
+                    
+                    {/* Decorative divider */}
+                    <div className="relative h-[1px] my-4">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+                      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#252838] rounded-full flex items-center justify-center">
+                        <SparklesIcon size={10} className="text-[#a48fff]" />
+                      </div>
+                    </div>
                     <div className="grid grid-cols-3 gap-3">
                       <Link 
                         href="/quests/my"
-                        className="btn-danger text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 text-center text-sm"
+                        className="relative font-medium tracking-wide rounded-md flex items-center justify-center text-sm py-3 px-4 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105"
                       >
+                        <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
                         Мої Квести
                       </Link>
                       <Link 
                         href="/heroes"
-                        className="btn-primary text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 text-center text-sm"
+                        className="relative font-medium tracking-wide rounded-md flex items-center justify-center text-sm py-3 px-4 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105"
                       >
+                        <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
                         Знайти Героїв
                       </Link>
                       <Link 
                         href="/quests/create"
-                        className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 text-center text-sm border border-emerald-500"
+                        className="relative font-medium tracking-wide rounded-md flex items-center justify-center text-sm py-3 px-4 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105"
                       >
+                        <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
                         Створити Квест
                       </Link>
                     </div>
@@ -92,14 +172,18 @@ export default function HomePage() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link 
                     href="/auth/signin"
-                    className="btn-primary text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg"
+                    className="relative font-medium tracking-wide rounded-md flex items-center justify-center py-4 px-8 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105"
                   >
+                    <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                    <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
                     Увійти ⚔️
                   </Link>
                   <Link 
                     href="/auth/signup"
-                    className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg border border-emerald-500"
+                    className="relative font-medium tracking-wide rounded-md flex items-center justify-center py-4 px-8 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105"
                   >
+                    <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                    <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
                     Створити Героя 🛡️
                   </Link>
                 </div>
@@ -109,8 +193,61 @@ export default function HomePage() {
 
           {/* Features Section */}
           <div className="mt-16 grid md:grid-cols-3 gap-8">
-            <div className="card-magical-border">
-              <div className="card-magical-content p-8 text-center hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+            <div className="relative mb-4 rounded-lg overflow-hidden cursor-pointer transform transition-all hover:scale-[1.02] active:scale-[0.98]">
+              {/* Decorative border with magical effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                {/* Top-right corner decoration */}
+                <div className="absolute top-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-bl-lg border-b border-l border-[#7a63d4]">
+                  <SwordIcon size={14} className="text-[#a48fff]" />
+                </div>
+                {/* Top-left corner decoration */}
+                <div className="absolute top-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-br-lg border-b border-r border-[#7a63d4]">
+                  <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                </div>
+                {/* Bottom-right corner decoration */}
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tl-lg border-t border-l border-[#7a63d4]">
+                  <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                </div>
+                {/* Bottom-left corner decoration */}
+                <div className="absolute bottom-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tr-lg border-t border-r border-[#7a63d4]">
+                  <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                </div>
+                {/* Magical sparkles - edge decorations */}
+                <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                
+                {/* Additional edge decorations */}
+                <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                <div className="absolute bottom-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-600"></div>
+                
+                {/* Middle edge decorations */}
+                <div className="absolute top-1/2 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                <div className="absolute top-1/2 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-700"></div>
+                <div className="absolute left-1/2 top-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                <div className="absolute left-1/2 bottom-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-500"></div>
+                
+                {/* Quarter edge decorations */}
+                <div className="absolute top-1/4 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-150"></div>
+                <div className="absolute top-1/4 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-450"></div>
+                <div className="absolute bottom-1/4 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-250"></div>
+                <div className="absolute bottom-1/4 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-550"></div>
+                
+                {/* Diagonal sparkles */}
+                <div className="absolute top-1/3 left-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                <div className="absolute top-2/3 right-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                <div className="absolute bottom-1/3 left-2/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-300"></div>
+                <div className="absolute top-2/3 left-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-600"></div>
+              </div>
+              {/* Card content */}
+              <div className="bg-[#252838] p-8 rounded-lg relative z-10 text-center">
+                {/* Inner decorative sparkles */}
+                <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-300"></div>
+                <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                <div className="absolute bottom-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                
                 <div className="text-5xl mb-6">⚔️</div>
                 <h3 className="text-xl font-bold text-[#d4c6ff] mb-4">Створюй Квести</h3>
                 <p className="text-gray-300 leading-relaxed">
@@ -119,8 +256,61 @@ export default function HomePage() {
               </div>
             </div>
             
-            <div className="card-magical-border">
-              <div className="card-magical-content p-8 text-center hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+            <div className="relative mb-4 rounded-lg overflow-hidden cursor-pointer transform transition-all hover:scale-[1.02] active:scale-[0.98]">
+              {/* Decorative border with magical effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                {/* Top-right corner decoration */}
+                <div className="absolute top-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-bl-lg border-b border-l border-[#7a63d4]">
+                  <UsersIcon size={14} className="text-[#a48fff]" />
+                </div>
+                {/* Top-left corner decoration */}
+                <div className="absolute top-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-br-lg border-b border-r border-[#7a63d4]">
+                  <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                </div>
+                {/* Bottom-right corner decoration */}
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tl-lg border-t border-l border-[#7a63d4]">
+                  <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                </div>
+                {/* Bottom-left corner decoration */}
+                <div className="absolute bottom-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tr-lg border-t border-r border-[#7a63d4]">
+                  <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                </div>
+                {/* Magical sparkles - edge decorations */}
+                <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                
+                {/* Additional edge decorations */}
+                <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                <div className="absolute bottom-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-600"></div>
+                
+                {/* Middle edge decorations */}
+                <div className="absolute top-1/2 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                <div className="absolute top-1/2 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-700"></div>
+                <div className="absolute left-1/2 top-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                <div className="absolute left-1/2 bottom-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-500"></div>
+                
+                {/* Quarter edge decorations */}
+                <div className="absolute top-1/4 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-150"></div>
+                <div className="absolute top-1/4 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-450"></div>
+                <div className="absolute bottom-1/4 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-250"></div>
+                <div className="absolute bottom-1/4 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-550"></div>
+                
+                {/* Diagonal sparkles */}
+                <div className="absolute top-1/3 left-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                <div className="absolute top-2/3 right-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                <div className="absolute bottom-1/3 left-2/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-300"></div>
+                <div className="absolute top-2/3 left-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-600"></div>
+              </div>
+              {/* Card content */}
+              <div className="bg-[#252838] p-8 rounded-lg relative z-10 text-center">
+                {/* Inner decorative sparkles */}
+                <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-300"></div>
+                <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                <div className="absolute bottom-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                
                 <div className="text-5xl mb-6">👥</div>
                 <h3 className="text-xl font-bold text-[#d4c6ff] mb-4">Знаходь Героїв</h3>
                 <p className="text-gray-300 leading-relaxed">
@@ -129,8 +319,61 @@ export default function HomePage() {
               </div>
             </div>
             
-            <div className="card-magical-border">
-              <div className="card-magical-content p-8 text-center hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+            <div className="relative mb-4 rounded-lg overflow-hidden cursor-pointer transform transition-all hover:scale-[1.02] active:scale-[0.98]">
+              {/* Decorative border with magical effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                {/* Top-right corner decoration */}
+                <div className="absolute top-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-bl-lg border-b border-l border-[#7a63d4]">
+                  <TrophyIcon size={14} className="text-[#a48fff]" />
+                </div>
+                {/* Top-left corner decoration */}
+                <div className="absolute top-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-br-lg border-b border-r border-[#7a63d4]">
+                  <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                </div>
+                {/* Bottom-right corner decoration */}
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tl-lg border-t border-l border-[#7a63d4]">
+                  <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                </div>
+                {/* Bottom-left corner decoration */}
+                <div className="absolute bottom-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tr-lg border-t border-r border-[#7a63d4]">
+                  <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                </div>
+                {/* Magical sparkles - edge decorations */}
+                <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                
+                {/* Additional edge decorations */}
+                <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                <div className="absolute bottom-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-600"></div>
+                
+                {/* Middle edge decorations */}
+                <div className="absolute top-1/2 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                <div className="absolute top-1/2 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-700"></div>
+                <div className="absolute left-1/2 top-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                <div className="absolute left-1/2 bottom-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-500"></div>
+                
+                {/* Quarter edge decorations */}
+                <div className="absolute top-1/4 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-150"></div>
+                <div className="absolute top-1/4 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-450"></div>
+                <div className="absolute bottom-1/4 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-250"></div>
+                <div className="absolute bottom-1/4 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-550"></div>
+                
+                {/* Diagonal sparkles */}
+                <div className="absolute top-1/3 left-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                <div className="absolute top-2/3 right-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                <div className="absolute bottom-1/3 left-2/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-300"></div>
+                <div className="absolute top-2/3 left-1/3 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-600"></div>
+              </div>
+              {/* Card content */}
+              <div className="bg-[#252838] p-8 rounded-lg relative z-10 text-center">
+                {/* Inner decorative sparkles */}
+                <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-300"></div>
+                <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                <div className="absolute bottom-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                
                 <div className="text-5xl mb-6">🏆</div>
                 <h3 className="text-xl font-bold text-[#d4c6ff] mb-4">Заробляй Нагороди</h3>
                 <p className="text-gray-300 leading-relaxed">
