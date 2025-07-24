@@ -201,11 +201,9 @@ export default function MyQuests() {
       <div className="absolute bottom-32 left-16 w-3 h-3 bg-[#3d2b6b] rounded-full opacity-10 animate-pulse animation-delay-800"></div>
       <div className="absolute bottom-16 right-8 w-1 h-1 bg-[#d4c6ff] rounded-full opacity-15 animate-pulse animation-delay-1200"></div>
       
-      {/* Mystical runes and symbols */}
-      <div className="absolute top-24 left-1/4 text-[#624cab] opacity-6 text-4xl font-bold">⚔️</div>
-      <div className="absolute bottom-24 right-1/3 text-[#a48fff] opacity-5 text-3xl">🏰</div>
-      <div className="absolute top-1/3 left-12 text-[#3d2b6b] opacity-8 text-2xl">🗡️</div>
-      <div className="absolute bottom-1/4 right-12 text-[#d4c6ff] opacity-7 text-3xl">🛡️</div>
+      {/* Mystical runes and symbols - moved to top and bottom only */}
+      <div className="absolute top-8 left-1/4 text-[#624cab] opacity-4 text-2xl">⚔️</div>
+      <div className="absolute bottom-8 right-1/3 text-[#a48fff] opacity-3 text-xl">🏰</div>
       
       {/* Subtle grid pattern */}
       <div className="absolute inset-0 opacity-3">
@@ -370,114 +368,158 @@ export default function MyQuests() {
                   )}
                 </div>
               ) : (
-                <div className="grid gap-4">
-                  {filteredQuests.map((quest) => (
-                    <div key={quest.id} className="relative rounded-lg overflow-hidden">
-                      {/* Decorative border with magical effect */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
-                        {/* Top-right corner decoration */}
-                        <div className="absolute top-0 right-0 w-6 h-6 bg-[#3d2b6b] flex items-center justify-center rounded-bl-lg border-b border-l border-[#7a63d4]">
-                          <SparklesIcon size={10} className="text-[#a48fff]" />
-                        </div>
-                        {/* Top-left corner decoration */}
-                        <div className="absolute top-0 left-0 w-6 h-6 bg-[#3d2b6b] flex items-center justify-center rounded-br-lg border-b border-r border-[#7a63d4]">
-                          <div className="w-1 h-1 bg-[#a48fff] rounded-full opacity-60"></div>
-                        </div>
-                        {/* Magical sparkles */}
-                        <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
-                        <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
-                        <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
-                        <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
-                      </div>
-                      
-                      {/* Card content */}
-                      <div className="bg-[#252838] p-4 rounded-lg relative z-10">
-                        {/* Quest Header */}
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-lg font-bold text-[#d4c6ff] mb-1 truncate">
-                              {quest.title}
-                              {quest.isUrgent && (
-                                <span className="ml-2 text-red-400 text-sm">⚡</span>
-                              )}
-                            </h3>
-                            <p className="text-gray-300 text-sm line-clamp-2">{quest.description}</p>
-                          </div>
-                          <div className="text-right ml-4 flex-shrink-0">
-                            <div className={`inline-block px-2 py-1 rounded text-xs font-medium border ${getDifficultyColor(quest.difficulty)}`}>
-                              {getDifficultyText(quest.difficulty)}
-                            </div>
-                            <div className={`text-xs mt-1 ${getStatusColor(quest.status)}`}>
-                              {getStatusText(quest.status)}
-                            </div>
-                          </div>
-                        </div>
+                                 <div className="grid gap-6">
+                   {filteredQuests.map((quest) => (
+                     <div key={quest.id} className="relative rounded-xl overflow-hidden transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                       {/* Decorative border with magical effect */}
+                       <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[2px] rounded-xl overflow-hidden">
+                         {/* Top-right corner decoration */}
+                         <div className="absolute top-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-bl-xl border-b border-l border-[#7a63d4]">
+                           <SparklesIcon size={12} className="text-[#a48fff]" />
+                         </div>
+                         {/* Top-left corner decoration */}
+                         <div className="absolute top-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-br-xl border-b border-r border-[#7a63d4]">
+                           <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                         </div>
+                         {/* Bottom-right corner decoration */}
+                         <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tl-xl border-t border-l border-[#7a63d4]">
+                           <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                         </div>
+                         {/* Bottom-left corner decoration */}
+                         <div className="absolute bottom-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tr-xl border-t border-r border-[#7a63d4]">
+                           <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+                         </div>
+                         
+                         {/* Magical sparkles - edge decorations */}
+                         <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                         <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                         <div className="absolute top-1/2 left-1/3 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-500"></div>
+                         
+                         {/* Additional edge decorations */}
+                         <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                         <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                         <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-100"></div>
+                         <div className="absolute bottom-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-600"></div>
+                         
+                         {/* Middle edge decorations */}
+                         <div className="absolute top-1/2 left-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                         <div className="absolute top-1/2 right-2 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-700"></div>
+                         <div className="absolute left-1/2 top-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                         <div className="absolute left-1/2 bottom-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-500"></div>
+                       </div>
+                       
+                       {/* Card content */}
+                       <div className="bg-[#252838] p-6 rounded-xl relative z-10">
+                         {/* Quest Header */}
+                         <div className="flex items-start justify-between mb-4">
+                           <div className="flex-1 min-w-0">
+                             <div className="flex items-center mb-2">
+                               <h3 className="text-xl font-bold text-[#d4c6ff] truncate">
+                                 {quest.title}
+                               </h3>
+                               {quest.isUrgent && (
+                                 <span className="ml-2 text-red-400 text-sm bg-red-900/20 px-2 py-1 rounded-full">⚡ Терміново</span>
+                               )}
+                             </div>
+                             <p className="text-gray-300 text-sm leading-relaxed line-clamp-2">{quest.description}</p>
+                           </div>
+                           <div className="text-right ml-4 flex-shrink-0">
+                             <div className={`inline-block px-3 py-1.5 rounded-lg text-xs font-bold border-2 shadow-lg ${getDifficultyColor(quest.difficulty)}`}>
+                               {getDifficultyText(quest.difficulty)}
+                             </div>
+                             <div className={`text-sm mt-2 font-medium ${getStatusColor(quest.status)}`}>
+                               {getStatusText(quest.status)}
+                             </div>
+                           </div>
+                         </div>
 
-                        {/* Quest Details - Compact */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3 text-xs">
-                          <div className="flex items-center">
-                            <UserIcon size={12} className="text-[#a48fff] mr-1" />
-                            <span className="text-gray-300 truncate">
-                              {quest.creator.heroName || quest.creator.name}
-                            </span>
-                          </div>
-                          {quest.receiver && (
-                            <div className="flex items-center">
-                              <UserIcon size={12} className="text-[#a48fff] mr-1" />
-                              <span className="text-gray-300 truncate">
-                                Виконує: {quest.receiver.heroName || quest.receiver.name}
-                              </span>
-                            </div>
-                          )}
-                          <div className="flex items-center">
-                            <CoinsIcon size={12} className="text-yellow-400 mr-1" />
-                            <span className="text-gray-300">{quest.reward} 🪙</span>
-                          </div>
-                          <div className="flex items-center">
-                            <SparklesIcon size={12} className="text-blue-400 mr-1" />
-                            <span className="text-gray-300">{quest.experience} ⭐</span>
-                          </div>
-                        </div>
+                         {/* Quest Details - Enhanced */}
+                         <div className="bg-[#1a1d29] rounded-lg p-4 mb-4 border border-[#4a4257]">
+                           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                             <div className="flex items-center">
+                               <div className="w-8 h-8 bg-[#624cab]/20 rounded-full flex items-center justify-center mr-3">
+                                 <UserIcon size={14} className="text-[#a48fff]" />
+                               </div>
+                               <div>
+                                 <div className="text-gray-400 text-xs">Створив</div>
+                                 <div className="text-gray-200 font-medium truncate">
+                                   {quest.creator.heroName || quest.creator.name}
+                                 </div>
+                               </div>
+                             </div>
+                             {quest.receiver && (
+                               <div className="flex items-center">
+                                 <div className="w-8 h-8 bg-[#624cab]/20 rounded-full flex items-center justify-center mr-3">
+                                   <UserIcon size={14} className="text-[#a48fff]" />
+                                 </div>
+                                 <div>
+                                   <div className="text-gray-400 text-xs">Виконує</div>
+                                   <div className="text-gray-200 font-medium truncate">
+                                     {quest.receiver.heroName || quest.receiver.name}
+                                   </div>
+                                 </div>
+                               </div>
+                             )}
+                             <div className="flex items-center">
+                               <div className="w-8 h-8 bg-yellow-500/20 rounded-full flex items-center justify-center mr-3">
+                                 <CoinsIcon size={14} className="text-yellow-400" />
+                               </div>
+                               <div>
+                                 <div className="text-gray-400 text-xs">Нагорода</div>
+                                 <div className="text-yellow-300 font-bold">{quest.reward} 🪙</div>
+                               </div>
+                             </div>
+                             <div className="flex items-center">
+                               <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center mr-3">
+                                 <SparklesIcon size={14} className="text-blue-400" />
+                               </div>
+                               <div>
+                                 <div className="text-gray-400 text-xs">Досвід</div>
+                                 <div className="text-blue-300 font-bold">{quest.experience} ⭐</div>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
 
-                        {/* Quest Actions */}
-                        <div className="flex flex-wrap gap-2">
-                          {quest.status === 'OPEN' && quest.receiverId === session.user.id && (
-                            <button
-                              onClick={() => handleAcceptQuest(quest.id)}
-                              className="relative font-medium tracking-wide rounded-md flex items-center justify-center text-xs py-2 px-3 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105"
-                            >
-                              <span className="absolute left-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
-                              <span className="absolute right-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
-                              Прийняти
-                            </button>
-                          )}
-                          
-                          {quest.status === 'IN_PROGRESS' && quest.receiverId === session.user.id && (
-                            <button
-                              onClick={() => handleCompleteQuest(quest.id)}
-                              className="relative font-medium tracking-wide rounded-md flex items-center justify-center text-xs py-2 px-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white border border-emerald-500 shadow-lg transition-all duration-200 transform hover:scale-105"
-                            >
-                              <span className="absolute left-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-emerald-300 opacity-50 rounded-full"></span>
-                              <span className="absolute right-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-emerald-300 opacity-50 rounded-full"></span>
-                              Завершити
-                            </button>
-                          )}
-                          
-                          {(quest.status === 'OPEN' || quest.status === 'IN_PROGRESS') && quest.creatorId === session.user.id && (
-                            <button
-                              onClick={() => handleCancelQuest(quest.id)}
-                              className="relative font-medium tracking-wide rounded-md flex items-center justify-center text-xs py-2 px-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white border border-red-500 shadow-lg transition-all duration-200 transform hover:scale-105"
-                            >
-                              <span className="absolute left-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-red-300 opacity-50 rounded-full"></span>
-                              <span className="absolute right-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-red-300 opacity-50 rounded-full"></span>
-                              Скасувати
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                         {/* Quest Actions */}
+                         <div className="flex flex-wrap gap-3">
+                           {quest.status === 'OPEN' && quest.receiverId === session.user.id && (
+                             <button
+                               onClick={() => handleAcceptQuest(quest.id)}
+                               className="relative font-medium tracking-wide rounded-lg flex items-center justify-center text-sm py-2.5 px-4 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105"
+                             >
+                               <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                               <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                               Прийняти квест
+                             </button>
+                           )}
+                           
+                           {quest.status === 'IN_PROGRESS' && quest.receiverId === session.user.id && (
+                             <button
+                               onClick={() => handleCompleteQuest(quest.id)}
+                               className="relative font-medium tracking-wide rounded-lg flex items-center justify-center text-sm py-2.5 px-4 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white border border-emerald-500 shadow-lg transition-all duration-200 transform hover:scale-105"
+                             >
+                               <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-emerald-300 opacity-50 rounded-full"></span>
+                               <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-emerald-300 opacity-50 rounded-full"></span>
+                               Завершити квест
+                             </button>
+                           )}
+                           
+                           {(quest.status === 'OPEN' || quest.status === 'IN_PROGRESS') && quest.creatorId === session.user.id && (
+                             <button
+                               onClick={() => handleCancelQuest(quest.id)}
+                               className="relative font-medium tracking-wide rounded-lg flex items-center justify-center text-sm py-2.5 px-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white border border-red-500 shadow-lg transition-all duration-200 transform hover:scale-105"
+                             >
+                               <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-red-300 opacity-50 rounded-full"></span>
+                               <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-red-300 opacity-50 rounded-full"></span>
+                               Скасувати квест
+                             </button>
+                           )}
+                         </div>
+                       </div>
+                     </div>
+                   ))}
+                 </div>
               )}
             </>
           )}
