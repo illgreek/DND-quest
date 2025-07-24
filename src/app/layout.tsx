@@ -20,9 +20,17 @@ export default function RootLayout({
     <html lang="uk">
       <body className={inter.className}>
         <Providers>
-          <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+          <div className="bg-[#1a1d29] min-h-screen flex text-gray-200 relative">
+            {/* Background decorative elements */}
+            <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1553481187-be93c21490a9?q=80&w=2070&auto=format&fit=crop')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundBlendMode: 'overlay'
+            }}></div>
+            
             <Navigation />
-            <main>
+            <main className="flex-1 relative z-10">
               {children}
             </main>
           </div>

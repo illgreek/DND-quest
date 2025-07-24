@@ -3,36 +3,24 @@
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { useState, useEffect } from 'react'
-import { getHeroClassLabel } from '@/lib/heroClasses'
+import { getHeroClassLabel, getHeroClassEmoji } from '@/lib/heroClasses'
+import { HomeIcon, ScrollIcon, PlusIcon, UserIcon, UsersIcon, LogOutIcon, SettingsIcon } from 'lucide-react'
 
 interface Friendship {
   id: string
   status: string
   senderId: string
   receiverId: string
-  createdAt: string
 }
 
 export default function Navigation() {
   const { data: session, status } = useSession()
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [pendingRequests, setPendingRequests] = useState<Friendship[]>([])
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
-    if (session) {
+    if (session?.user?.id) {
       fetchPendingRequests()
-    }
-  }, [session])
-
-  useEffect(() => {
-    const handleFriendshipUpdate = () => {
-      fetchPendingRequests()
-    }
-
-    window.addEventListener('friendship-updated', handleFriendshipUpdate)
-    
-    return () => {
-      window.removeEventListener('friendship-updated', handleFriendshipUpdate)
     }
   }, [session])
 
@@ -42,200 +30,212 @@ export default function Navigation() {
       if (response.ok) {
         const friendships = await response.json()
         const pending = friendships.filter((f: Friendship) => 
-          f.receiverId === session?.user.id && f.status === 'PENDING'
+          f.receiverId === session?.user?.id && f.status === 'PENDING'
         )
         setPendingRequests(pending)
       }
-    } catch (err) {
-      console.error('Error fetching pending requests:', err)
+    } catch (error) {
+      console.error('Error fetching pending requests:', error)
     }
   }
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: '/' })
+  useEffect(() => {
+    const handleFriendshipUpdate = () => {
+      fetchPendingRequests()
+    }
+
+    window.addEventListener('friendship-updated', handleFriendshipUpdate)
+    return () => window.removeEventListener('friendship-updated', handleFriendshipUpdate)
+  }, [session])
+
+  if (status === 'loading') {
+    return (
+      <nav className="bg-[#10131c] border-r border-[#4a4257] w-64 flex-shrink-0 hidden md:flex flex-col">
+        <div className="p-4 flex items-center border-b border-[#4a4257]">
+          <div className="w-10 h-10 rounded-lg bg-[#3d2b6b] flex items-center justify-center mr-3 border border-[#624cab]">
+            <div className="w-6 h-6 border-2 border-[#a48fff] border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <h1 className="text-xl text-[#d4c6ff] font-bold tracking-wider">DND Quests</h1>
+        </div>
+      </nav>
+    )
   }
 
   return (
-    <nav className="bg-gray-900 bg-opacity-80 backdrop-blur-sm border-b border-gray-700">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl">⚔️</span>
-            <span className="text-xl font-bold text-yellow-400">DND Quests</span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            {status === 'loading' ? (
-              <>
-                <div className="w-20 h-6 bg-gray-700 rounded animate-pulse"></div>
-                <div className="w-24 h-6 bg-gray-700 rounded animate-pulse"></div>
-                <div className="w-28 h-6 bg-gray-700 rounded animate-pulse"></div>
-                <div className="w-32 h-8 bg-gray-700 rounded animate-pulse"></div>
-              </>
-            ) : session ? (
-              <>
-                <Link 
-                  href="/quests/my"
-                  className="text-gray-300 hover:text-yellow-400 transition-colors"
-                >
-                  Мої Квести
-                </Link>
-                <Link 
-                  href="/heroes"
-                  className="text-gray-300 hover:text-yellow-400 transition-colors relative"
-                >
-                  Герої
-                  {pendingRequests.length > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                      {pendingRequests.length}
-                    </span>
-                  )}
-                </Link>
-                <Link 
-                  href="/quests/create"
-                  className="text-gray-300 hover:text-yellow-400 transition-colors"
-                >
-                  Створити Квест
-                </Link>
-                
-                {/* User Menu */}
-                <div className="relative group">
-                  <button className="flex items-center space-x-2 text-gray-300 hover:text-yellow-400 transition-colors">
-                    <span className="text-sm">
-                      {session.user.heroName || session.user.name}
-                    </span>
-                    <span className="text-xs bg-gray-700 px-2 py-1 rounded">
-                      Lvl {session.user.heroLevel} • {getHeroClassLabel(session.user.heroClass || '')}
-                    </span>
-                  </button>
-                  
-                  <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div className="py-2">
-                      <Link 
-                        href="/profile"
-                        className="block px-4 py-2 text-gray-300 hover:bg-gray-700"
-                      >
-                        Профіль
-                      </Link>
-                      <button
-                        onClick={handleSignOut}
-                        className="block w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700"
-                      >
-                        Вийти
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link 
-                  href="/auth/signin"
-                  className="text-gray-300 hover:text-yellow-400 transition-colors"
-                >
-                  Увійти
-                </Link>
-                <Link 
-                  href="/auth/signup"
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
-                >
-                  Створити Героя
-                </Link>
-              </>
-            )}
+    <>
+      {/* Desktop Sidebar Navigation */}
+      <aside className="hidden md:flex flex-col w-64 bg-[#10131c] border-r border-[#4a4257] relative z-10">
+        {/* Logo area */}
+        <div className="p-4 flex items-center border-b border-[#4a4257]">
+          <div className="w-10 h-10 rounded-lg bg-[#3d2b6b] flex items-center justify-center mr-3 border border-[#624cab]">
+            <span className="text-yellow-400 text-xl">⚔️</span>
           </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-300 hover:text-yellow-400"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
+          <h1 className="text-xl text-[#d4c6ff] font-bold tracking-wider">
+            DND Quests
+          </h1>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-700">
-            {status === 'loading' ? (
-              <div className="space-y-2">
-                <div className="w-20 h-6 bg-gray-700 rounded animate-pulse"></div>
-                <div className="w-24 h-6 bg-gray-700 rounded animate-pulse"></div>
-                <div className="w-28 h-6 bg-gray-700 rounded animate-pulse"></div>
-                <div className="w-32 h-8 bg-gray-700 rounded animate-pulse"></div>
+        {/* User profile summary */}
+        {session && (
+          <div className="p-4 border-b border-[#4a4257] bg-[#141824]">
+            <div className="flex items-center">
+              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#624cab] mr-3 bg-[#3d2b6b] flex items-center justify-center">
+                <span className="text-2xl">{getHeroClassEmoji(session.user.heroClass || '')}</span>
               </div>
-            ) : session ? (
-              <div className="space-y-2">
-                <Link 
-                  href="/quests/my"
-                  className="block text-gray-300 hover:text-yellow-400 py-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Мої Квести
-                </Link>
-                <Link 
-                  href="/heroes"
-                  className="block text-gray-300 hover:text-yellow-400 py-2 relative"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Герої
-                  {pendingRequests.length > 0 && (
-                    <span className="ml-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 inline-flex items-center justify-center">
-                      {pendingRequests.length}
-                    </span>
-                  )}
-                </Link>
-                <Link 
-                  href="/quests/create"
-                  className="block text-gray-300 hover:text-yellow-400 py-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Створити Квест
-                </Link>
-                <Link 
-                  href="/profile"
-                  className="block text-gray-300 hover:text-yellow-400 py-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Профіль
-                </Link>
-                <button
-                  onClick={() => {
-                    handleSignOut()
-                    setIsMenuOpen(false)
-                  }}
-                  className="block w-full text-left text-gray-300 hover:text-yellow-400 py-2"
-                >
-                  Вийти
-                </button>
+              <div>
+                <div className="text-[#d4c6ff] font-bold">{session.user.heroName || session.user.name}</div>
+                <div className="flex items-center text-xs text-gray-400">
+                  <span>Lvl {session.user.heroLevel}</span>
+                  <span className="mx-1">•</span>
+                  <span>{getHeroClassLabel(session.user.heroClass || '')}</span>
+                </div>
               </div>
-            ) : (
-              <div className="space-y-2">
-                <Link 
-                  href="/auth/signin"
-                  className="block text-gray-300 hover:text-yellow-400 py-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Увійти
-                </Link>
-                <Link 
-                  href="/auth/signup"
-                  className="block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Створити Героя
-                </Link>
+            </div>
+
+            {/* XP Progress bar */}
+            <div className="mt-3">
+              <div className="flex justify-between text-xs mb-1">
+                <span className="text-[#a48fff]">Прогрес</span>
+                <span className="text-gray-400">{session.user.experience || 0} / 100 XP</span>
               </div>
-            )}
+              <div className="w-full bg-[#1a1d29] rounded-full h-2 overflow-hidden">
+                <div 
+                  className="bg-gradient-to-r from-[#624cab] to-[#a48fff] h-full rounded-full" 
+                  style={{ width: `${Math.min(((session.user.experience || 0) / 100) * 100, 100)}%` }}
+                ></div>
+              </div>
+            </div>
           </div>
         )}
+
+        {/* Main Navigation */}
+        <nav className="flex-1 py-4 overflow-y-auto">
+          <div className="px-4 space-y-2">
+            <NavButton
+              icon={<HomeIcon size={20} />}
+              label="Головна"
+              href="/"
+              isActive={true}
+            />
+            
+            {session && (
+              <>
+                <NavButton
+                  icon={<ScrollIcon size={20} />}
+                  label="Мої Квести"
+                  href="/quests/my"
+                  isActive={false}
+                />
+                
+                <NavButton
+                  icon={<UsersIcon size={20} />}
+                  label={`Герої ${pendingRequests.length > 0 ? `(${pendingRequests.length})` : ''}`}
+                  href="/heroes"
+                  isActive={false}
+                  badge={pendingRequests.length}
+                />
+                
+                <NavButton
+                  icon={<PlusIcon size={20} />}
+                  label="Створити Квест"
+                  href="/quests/create"
+                  isActive={false}
+                />
+              </>
+            )}
+          </div>
+
+          {/* Secondary Navigation */}
+          {session && (
+            <div className="px-4 mt-8 space-y-2">
+              <div className="text-xs text-[#a48fff] font-medium mb-2 px-2">Акаунт</div>
+              
+              <NavButton
+                icon={<UserIcon size={20} />}
+                label="Профіль"
+                href="/profile"
+                isActive={false}
+              />
+              
+              <button
+                onClick={() => signOut()}
+                className="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-[#2a2d3d] hover:text-[#d4c6ff] rounded-md transition-colors"
+              >
+                <LogOutIcon size={20} className="mr-3 text-[#a48fff]" />
+                Вийти
+              </button>
+            </div>
+          )}
+        </nav>
+      </aside>
+
+      {/* Mobile Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#10131c] border-t border-[#4a4257] z-50">
+        <div className="flex justify-around py-2">
+          <Link href="/" className="flex flex-col items-center p-2 text-[#a48fff]">
+            <HomeIcon size={20} />
+            <span className="text-xs mt-1">Головна</span>
+          </Link>
+          
+          {session && (
+            <>
+              <Link href="/quests/my" className="flex flex-col items-center p-2 text-[#a48fff]">
+                <ScrollIcon size={20} />
+                <span className="text-xs mt-1">Квести</span>
+              </Link>
+              
+              <Link href="/heroes" className="flex flex-col items-center p-2 text-[#a48fff] relative">
+                <UsersIcon size={20} />
+                <span className="text-xs mt-1">Герої</span>
+                {pendingRequests.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {pendingRequests.length}
+                  </span>
+                )}
+              </Link>
+              
+              <Link href="/quests/create" className="flex flex-col items-center p-2 text-[#a48fff]">
+                <PlusIcon size={20} />
+                <span className="text-xs mt-1">Створити</span>
+              </Link>
+              
+              <Link href="/profile" className="flex flex-col items-center p-2 text-[#a48fff]">
+                <UserIcon size={20} />
+                <span className="text-xs mt-1">Профіль</span>
+              </Link>
+            </>
+          )}
+        </div>
       </div>
-    </nav>
+    </>
+  )
+}
+
+interface NavButtonProps {
+  icon: React.ReactNode
+  label: string
+  href: string
+  isActive: boolean
+  badge?: number
+}
+
+function NavButton({ icon, label, href, isActive, badge }: NavButtonProps) {
+  return (
+    <Link
+      href={href}
+      className={`flex items-center px-3 py-2 text-sm rounded-md transition-colors relative ${
+        isActive 
+          ? 'bg-[#2a2d3d] text-[#d4c6ff] border border-[#624cab]' 
+          : 'text-gray-300 hover:bg-[#2a2d3d] hover:text-[#d4c6ff]'
+      }`}
+    >
+      <span className="mr-3 text-[#a48fff]">{icon}</span>
+      <span className="flex-1">{label}</span>
+      {badge && badge > 0 && (
+        <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          {badge}
+        </span>
+      )}
+    </Link>
   )
 } 

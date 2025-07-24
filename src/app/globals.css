@@ -1,26 +1,124 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Metamorphous&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Metamorphous', serif;
+  background-color: #1a1d29;
+  color: #e2e8f0;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cinzel', serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1d29;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3d2b6b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #624cab;
+}
+
+/* Animation delays */
+.animation-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animation-delay-500 {
+  animation-delay: 0.5s;
+}
+
+.animation-delay-700 {
+  animation-delay: 0.7s;
+}
+
+/* Magical glow effect for special elements */
+.magical-glow {
+  box-shadow: 0 0 10px 2px rgba(164, 143, 255, 0.3);
+}
+
+/* Animated background for special sections */
+.magical-bg {
+  background: linear-gradient(45deg, #3d2b6b, #624cab, #3d2b6b);
+  background-size: 200% 200%;
+  animation: gradientBG 10s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom button styles */
+.btn-primary {
+  @apply bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg;
+}
+
+.btn-secondary {
+  @apply bg-[#2a2d3d] text-gray-300 hover:bg-[#353849] border border-[#4a4257];
+}
+
+.btn-danger {
+  @apply bg-gradient-to-r from-[#8c2a3e] to-[#6e1f30] text-gray-100 hover:from-[#9e3046] hover:to-[#7d2335] border border-[#a33d53];
+}
+
+/* Card styles */
+.card-magical {
+  @apply bg-[#252838] border border-[#4a4257] rounded-lg;
+}
+
+.card-magical-border {
+  @apply relative;
+}
+
+.card-magical-border::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden;
+  z-index: 0;
+}
+
+.card-magical-content {
+  @apply relative z-10 bg-[#252838] rounded-lg;
+}
+
+/* Input styles */
+.input-magical {
+  @apply bg-[#1a1d29] text-gray-200 border border-[#4a4257] focus:border-[#624cab] focus:ring-2 focus:ring-[#624cab] outline-none;
+}
+
+/* Text colors */
+.text-primary {
+  @apply text-[#d4c6ff];
+}
+
+.text-secondary {
+  @apply text-[#a48fff];
+}
+
+.text-muted {
+  @apply text-gray-300;
 }
