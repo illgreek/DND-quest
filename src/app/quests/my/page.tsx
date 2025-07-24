@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { getHeroClassLabel } from '@/lib/heroClasses'
-import { SearchIcon, FilterIcon, PlusIcon, ClockIcon, CheckIcon, XIcon, SparklesIcon, SwordIcon, CoinsIcon, UserIcon } from 'lucide-react'
+import { SearchIcon, FilterIcon, PlusIcon, ClockIcon, CheckIcon, XIcon, SparklesIcon, SwordIcon, CoinsIcon, UserIcon, ArrowLeftIcon } from 'lucide-react'
 
 interface Quest {
   id: string
@@ -112,11 +112,11 @@ export default function MyQuests() {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'EASY': return 'bg-emerald-800 text-emerald-200'
-      case 'MEDIUM': return 'bg-amber-800 text-amber-200'
-      case 'HARD': return 'bg-red-900 text-red-200'
-      case 'EPIC': return 'bg-purple-900 text-purple-200'
-      default: return 'bg-gray-700 text-gray-300'
+      case 'EASY': return 'bg-emerald-800 text-emerald-200 border-emerald-600'
+      case 'MEDIUM': return 'bg-amber-800 text-amber-200 border-amber-600'
+      case 'HARD': return 'bg-red-900 text-red-200 border-red-600'
+      case 'EPIC': return 'bg-purple-900 text-purple-200 border-purple-600'
+      default: return 'bg-gray-700 text-gray-300 border-gray-600'
     }
   }
 
@@ -193,204 +193,295 @@ export default function MyQuests() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-[#d4c6ff] mb-2">
-            Мої Квести
-          </h1>
-          <p className="text-gray-300">
-            Керуй своїми епічними місіями!
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#1a1b26] text-gray-100 relative overflow-hidden">
+      {/* Background decorative elements */}
+      {/* Floating magical orbs */}
+      <div className="absolute top-32 left-8 w-2 h-2 bg-[#624cab] rounded-full opacity-15 animate-pulse animation-delay-1000"></div>
+      <div className="absolute top-16 right-12 w-1 h-1 bg-[#a48fff] rounded-full opacity-20 animate-pulse animation-delay-1500"></div>
+      <div className="absolute bottom-32 left-16 w-3 h-3 bg-[#3d2b6b] rounded-full opacity-10 animate-pulse animation-delay-800"></div>
+      <div className="absolute bottom-16 right-8 w-1 h-1 bg-[#d4c6ff] rounded-full opacity-15 animate-pulse animation-delay-1200"></div>
+      
+      {/* Mystical runes and symbols */}
+      <div className="absolute top-24 left-1/4 text-[#624cab] opacity-6 text-4xl font-bold">⚔️</div>
+      <div className="absolute bottom-24 right-1/3 text-[#a48fff] opacity-5 text-3xl">🏰</div>
+      <div className="absolute top-1/3 left-12 text-[#3d2b6b] opacity-8 text-2xl">🗡️</div>
+      <div className="absolute bottom-1/4 right-12 text-[#d4c6ff] opacity-7 text-3xl">🛡️</div>
+      
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 opacity-3">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+        
+        <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-0 left-3/4 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
+      </div>
+      
+      {/* Corner decorative elements */}
+      <div className="absolute top-0 left-0 w-24 h-24 border-l border-t border-[#624cab] opacity-12"></div>
+      <div className="absolute top-0 right-0 w-24 h-24 border-r border-t border-[#624cab] opacity-12"></div>
+      <div className="absolute bottom-0 left-0 w-24 h-24 border-l border-b border-[#624cab] opacity-12"></div>
+      <div className="absolute bottom-0 right-0 w-24 h-24 border-r border-b border-[#624cab] opacity-12"></div>
 
-        {error && (
-          <div className="bg-red-600 text-white p-4 rounded-lg mb-6">
-            {error}
-          </div>
-        )}
-
-        {/* Tabs */}
-        <div className="flex border-b border-[#4a4257] mb-6">
-          <button
-            onClick={() => setActiveTab('all')}
-            className={`px-6 py-3 font-medium transition-colors ${
-              activeTab === 'all'
-                ? 'text-[#d4c6ff] border-b-2 border-[#a48fff]'
-                : 'text-gray-400 hover:text-gray-300'
-            }`}
-          >
-            Всі квести
-          </button>
-          <button
-            onClick={() => setActiveTab('assigned')}
-            className={`px-6 py-3 font-medium transition-colors ${
-              activeTab === 'assigned'
-                ? 'text-[#d4c6ff] border-b-2 border-[#a48fff]'
-                : 'text-gray-400 hover:text-gray-300'
-            }`}
-          >
-            Призначені мені
-          </button>
-          <button
-            onClick={() => setActiveTab('created')}
-            className={`px-6 py-3 font-medium transition-colors ${
-              activeTab === 'created'
-                ? 'text-[#d4c6ff] border-b-2 border-[#a48fff]'
-                : 'text-gray-400 hover:text-gray-300'
-            }`}
-          >
-            Створені мною
-          </button>
-        </div>
-
-        {/* Search and Create */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
-          <div className="flex-1 relative">
-            <SearchIcon size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#a48fff]" />
-            <input
-              type="text"
-              placeholder="Пошук квестів..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="input-magical w-full pl-10 p-3 rounded-lg"
-            />
-          </div>
-          <Link
-            href="/quests/create"
-            className="btn-primary text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center"
-          >
-            <PlusIcon size={16} className="mr-2" />
-            Створити квест
-          </Link>
-        </div>
-
-        {/* Loading State */}
-        {loading && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 relative">
-              <div className="absolute inset-0 animate-spin">
-                <div className="w-full h-full border-4 border-transparent border-t-[#a48fff] border-r-[#624cab] rounded-full"></div>
-              </div>
-              <div className="absolute inset-2 bg-[#252838] rounded-full flex items-center justify-center">
-                <span className="text-[#a48fff] text-xs font-bold">⚔️</span>
-              </div>
+      <div className="container mx-auto px-4 py-8 relative z-10">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center mb-4">
+              <Link 
+                href="/"
+                className="mr-4 p-2 rounded-lg bg-[#252838] border border-[#4a4257] hover:border-[#624cab] transition-colors"
+              >
+                <ArrowLeftIcon size={20} className="text-[#a48fff]" />
+              </Link>
+              <h1 className="text-4xl font-bold text-[#d4c6ff] drop-shadow-lg">
+                Мої Квести
+              </h1>
+              <div className="ml-2 text-3xl text-[#a48fff] opacity-80">⚔️</div>
             </div>
-            <h2 className="text-xl font-bold text-[#d4c6ff] mb-2">
-              Завантаження квестів...
-            </h2>
-            <p className="text-gray-300">
-              Знаходимо твої місії
+            <p className="text-xl text-gray-300">
+              Керуй своїми епічними місіями!
             </p>
           </div>
-        )}
 
-        {/* Quests List */}
-        {!loading && (
-          <>
-            {filteredQuests.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-gray-400 text-xl mb-4">
-                  {searchTerm ? 'Квестів не знайдено' : 'Немає квестів'}
-                </div>
-                {!searchTerm && (
-                  <Link
-                    href="/quests/create"
-                    className="btn-primary text-white font-bold py-3 px-6 rounded-lg transition-colors inline-flex items-center"
-                  >
-                    <PlusIcon size={16} className="mr-2" />
-                    Створити перший квест
-                  </Link>
-                )}
+          {error && (
+            <div className="bg-red-600 text-white p-4 rounded-lg mb-6 border border-red-500">
+              {error}
+            </div>
+          )}
+
+          {/* Tabs */}
+          <div className="relative mb-6 rounded-lg overflow-hidden max-w-2xl mx-auto">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+              {/* Magical sparkles */}
+              <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+              <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+              <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+              <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+            </div>
+            <div className="bg-[#252838] p-1 rounded-lg relative z-10">
+              <div className="flex">
+                <button
+                  onClick={() => setActiveTab('all')}
+                  className={`flex-1 px-4 py-3 font-medium transition-colors rounded-md ${
+                    activeTab === 'all'
+                      ? 'text-[#d4c6ff] bg-[#624cab] shadow-lg'
+                      : 'text-gray-400 hover:text-gray-300 hover:bg-[#2a2d3d]'
+                  }`}
+                >
+                  Всі квести
+                </button>
+                <button
+                  onClick={() => setActiveTab('assigned')}
+                  className={`flex-1 px-4 py-3 font-medium transition-colors rounded-md ${
+                    activeTab === 'assigned'
+                      ? 'text-[#d4c6ff] bg-[#624cab] shadow-lg'
+                      : 'text-gray-400 hover:text-gray-300 hover:bg-[#2a2d3d]'
+                  }`}
+                >
+                  Призначені мені
+                </button>
+                <button
+                  onClick={() => setActiveTab('created')}
+                  className={`flex-1 px-4 py-3 font-medium transition-colors rounded-md ${
+                    activeTab === 'created'
+                      ? 'text-[#d4c6ff] bg-[#624cab] shadow-lg'
+                      : 'text-gray-400 hover:text-gray-300 hover:bg-[#2a2d3d]'
+                  }`}
+                >
+                  Створені мною
+                </button>
               </div>
-            ) : (
-              <div className="space-y-4">
-                {filteredQuests.map((quest) => (
-                  <div key={quest.id} className="card-magical-border">
-                    <div className="card-magical-content p-6">
-                      {/* Quest Header */}
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <h3 className="text-xl font-bold text-[#d4c6ff] mb-2">
-                            {quest.title}
-                            {quest.isUrgent && (
-                              <span className="ml-2 text-red-400 text-sm">⚡ Терміново</span>
-                            )}
-                          </h3>
-                          <p className="text-gray-300 mb-3">{quest.description}</p>
-                        </div>
-                        <div className="text-right">
-                          <div className={`inline-block px-2 py-1 rounded text-xs font-medium ${getDifficultyColor(quest.difficulty)}`}>
-                            {getDifficultyText(quest.difficulty)}
-                          </div>
-                          <div className={`text-sm mt-1 ${getStatusColor(quest.status)}`}>
-                            {getStatusText(quest.status)}
-                          </div>
-                        </div>
-                      </div>
+            </div>
+          </div>
 
-                      {/* Quest Details */}
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                        <div className="flex items-center text-sm">
-                          <UserIcon size={14} className="text-[#a48fff] mr-2" />
-                          <span className="text-gray-300">
-                            {quest.creator.heroName || quest.creator.name}
-                          </span>
+          {/* Search and Create */}
+          <div className="flex flex-col md:flex-row gap-4 mb-8 max-w-4xl mx-auto">
+            <div className="flex-1 relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+              </div>
+              <div className="relative bg-[#252838] rounded-lg p-[1px]">
+                <SearchIcon size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#a48fff] z-10" />
+                <input
+                  type="text"
+                  placeholder="Пошук квестів..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 p-3 bg-[#1a1d29] border border-[#4a4257] rounded-lg text-gray-100 placeholder-gray-400 focus:border-[#624cab] focus:outline-none transition-colors"
+                />
+              </div>
+            </div>
+            <Link
+              href="/quests/create"
+              className="relative font-medium tracking-wide rounded-md flex items-center justify-center py-3 px-6 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105"
+            >
+              <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+              <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+              <PlusIcon size={16} className="mr-2" />
+              Створити квест
+            </Link>
+          </div>
+
+          {/* Loading State */}
+          {loading && (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 mx-auto mb-4 relative">
+                <div className="absolute inset-0 animate-spin">
+                  <div className="w-full h-full border-4 border-transparent border-t-[#a48fff] border-r-[#624cab] rounded-full"></div>
+                </div>
+                <div className="absolute inset-2 bg-[#252838] rounded-full flex items-center justify-center">
+                  <span className="text-[#a48fff] text-xs font-bold">⚔️</span>
+                </div>
+              </div>
+              <h2 className="text-xl font-bold text-[#d4c6ff] mb-2">
+                Завантаження квестів...
+              </h2>
+              <p className="text-gray-300">
+                Знаходимо твої місії
+              </p>
+            </div>
+          )}
+
+          {/* Quests List */}
+          {!loading && (
+            <>
+              {filteredQuests.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-gray-400 text-xl mb-4">
+                    {searchTerm ? 'Квестів не знайдено' : 'Немає квестів'}
+                  </div>
+                  {!searchTerm && (
+                    <Link
+                      href="/quests/create"
+                      className="relative font-medium tracking-wide rounded-md flex items-center justify-center py-3 px-6 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105 inline-flex"
+                    >
+                      <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                      <PlusIcon size={16} className="mr-2" />
+                      Створити перший квест
+                    </Link>
+                  )}
+                </div>
+              ) : (
+                <div className="grid gap-4">
+                  {filteredQuests.map((quest) => (
+                    <div key={quest.id} className="relative rounded-lg overflow-hidden">
+                      {/* Decorative border with magical effect */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                        {/* Top-right corner decoration */}
+                        <div className="absolute top-0 right-0 w-6 h-6 bg-[#3d2b6b] flex items-center justify-center rounded-bl-lg border-b border-l border-[#7a63d4]">
+                          <SparklesIcon size={10} className="text-[#a48fff]" />
                         </div>
-                        {quest.receiver && (
-                          <div className="flex items-center text-sm">
-                            <UserIcon size={14} className="text-[#a48fff] mr-2" />
-                            <span className="text-gray-300">
-                              Виконує: {quest.receiver.heroName || quest.receiver.name}
+                        {/* Top-left corner decoration */}
+                        <div className="absolute top-0 left-0 w-6 h-6 bg-[#3d2b6b] flex items-center justify-center rounded-br-lg border-b border-r border-[#7a63d4]">
+                          <div className="w-1 h-1 bg-[#a48fff] rounded-full opacity-60"></div>
+                        </div>
+                        {/* Magical sparkles */}
+                        <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                        <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                        <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+                        <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+                      </div>
+                      
+                      {/* Card content */}
+                      <div className="bg-[#252838] p-4 rounded-lg relative z-10">
+                        {/* Quest Header */}
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-lg font-bold text-[#d4c6ff] mb-1 truncate">
+                              {quest.title}
+                              {quest.isUrgent && (
+                                <span className="ml-2 text-red-400 text-sm">⚡</span>
+                              )}
+                            </h3>
+                            <p className="text-gray-300 text-sm line-clamp-2">{quest.description}</p>
+                          </div>
+                          <div className="text-right ml-4 flex-shrink-0">
+                            <div className={`inline-block px-2 py-1 rounded text-xs font-medium border ${getDifficultyColor(quest.difficulty)}`}>
+                              {getDifficultyText(quest.difficulty)}
+                            </div>
+                            <div className={`text-xs mt-1 ${getStatusColor(quest.status)}`}>
+                              {getStatusText(quest.status)}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Quest Details - Compact */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3 text-xs">
+                          <div className="flex items-center">
+                            <UserIcon size={12} className="text-[#a48fff] mr-1" />
+                            <span className="text-gray-300 truncate">
+                              {quest.creator.heroName || quest.creator.name}
                             </span>
                           </div>
-                        )}
-                        <div className="flex items-center text-sm">
-                          <CoinsIcon size={14} className="text-yellow-400 mr-2" />
-                          <span className="text-gray-300">{quest.reward} 🪙</span>
+                          {quest.receiver && (
+                            <div className="flex items-center">
+                              <UserIcon size={12} className="text-[#a48fff] mr-1" />
+                              <span className="text-gray-300 truncate">
+                                Виконує: {quest.receiver.heroName || quest.receiver.name}
+                              </span>
+                            </div>
+                          )}
+                          <div className="flex items-center">
+                            <CoinsIcon size={12} className="text-yellow-400 mr-1" />
+                            <span className="text-gray-300">{quest.reward} 🪙</span>
+                          </div>
+                          <div className="flex items-center">
+                            <SparklesIcon size={12} className="text-blue-400 mr-1" />
+                            <span className="text-gray-300">{quest.experience} ⭐</span>
+                          </div>
                         </div>
-                        <div className="flex items-center text-sm">
-                          <SparklesIcon size={14} className="text-blue-400 mr-2" />
-                          <span className="text-gray-300">{quest.experience} ⭐</span>
-                        </div>
-                      </div>
 
-                      {/* Quest Actions */}
-                      <div className="flex flex-wrap gap-2">
-                        {quest.status === 'OPEN' && quest.receiverId === session.user.id && (
-                          <button
-                            onClick={() => handleAcceptQuest(quest.id)}
-                            className="btn-primary text-white font-bold py-2 px-4 rounded transition-colors"
-                          >
-                            Прийняти квест
-                          </button>
-                        )}
-                        
-                        {quest.status === 'IN_PROGRESS' && quest.receiverId === session.user.id && (
-                          <button
-                            onClick={() => handleCompleteQuest(quest.id)}
-                            className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold py-2 px-4 rounded transition-colors border border-emerald-500"
-                          >
-                            Завершити квест
-                          </button>
-                        )}
-                        
-                        {(quest.status === 'OPEN' || quest.status === 'IN_PROGRESS') && quest.creatorId === session.user.id && (
-                          <button
-                            onClick={() => handleCancelQuest(quest.id)}
-                            className="btn-danger text-white font-bold py-2 px-4 rounded transition-colors"
-                          >
-                            Скасувати квест
-                          </button>
-                        )}
+                        {/* Quest Actions */}
+                        <div className="flex flex-wrap gap-2">
+                          {quest.status === 'OPEN' && quest.receiverId === session.user.id && (
+                            <button
+                              onClick={() => handleAcceptQuest(quest.id)}
+                              className="relative font-medium tracking-wide rounded-md flex items-center justify-center text-xs py-2 px-3 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105"
+                            >
+                              <span className="absolute left-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                              <span className="absolute right-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                              Прийняти
+                            </button>
+                          )}
+                          
+                          {quest.status === 'IN_PROGRESS' && quest.receiverId === session.user.id && (
+                            <button
+                              onClick={() => handleCompleteQuest(quest.id)}
+                              className="relative font-medium tracking-wide rounded-md flex items-center justify-center text-xs py-2 px-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white border border-emerald-500 shadow-lg transition-all duration-200 transform hover:scale-105"
+                            >
+                              <span className="absolute left-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-emerald-300 opacity-50 rounded-full"></span>
+                              <span className="absolute right-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-emerald-300 opacity-50 rounded-full"></span>
+                              Завершити
+                            </button>
+                          )}
+                          
+                          {(quest.status === 'OPEN' || quest.status === 'IN_PROGRESS') && quest.creatorId === session.user.id && (
+                            <button
+                              onClick={() => handleCancelQuest(quest.id)}
+                              className="relative font-medium tracking-wide rounded-md flex items-center justify-center text-xs py-2 px-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white border border-red-500 shadow-lg transition-all duration-200 transform hover:scale-105"
+                            >
+                              <span className="absolute left-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-red-300 opacity-50 rounded-full"></span>
+                              <span className="absolute right-1 top-1/2 -translate-y-1/2 w-0.5 h-1/2 bg-red-300 opacity-50 rounded-full"></span>
+                              Скасувати
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   )

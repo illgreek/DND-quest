@@ -114,7 +114,7 @@ export default function HomePage() {
             
             {session ? (
               <div className="space-y-4">
-                <div className="relative mb-4 rounded-lg overflow-hidden max-w-lg mx-auto">
+                <div className="relative mb-4 rounded-lg overflow-hidden max-w-4xl mx-auto">
                   {/* Decorative border with magical effect */}
                   <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
                     {/* Top-right corner decoration */}
