@@ -77,20 +77,15 @@ export default function Navigation() {
     
     setIsSigningOut(true)
     try {
-      // Виходимо з системи без автоматичного перенаправлення
+      // Одразу перенаправляємо на сторінку входу
+      router.push('/auth/signin')
+      
+      // Потім виходимо з системи
       await signOut({ 
         redirect: false 
       })
-      
-      // Невелика затримка для забезпечення завершення виходу
-      setTimeout(() => {
-        // Перенаправляємо на сторінку входу
-        router.push('/auth/signin')
-      }, 100)
     } catch (error) {
       console.error('Error signing out:', error)
-      // У випадку помилки все одно перенаправляємо
-      router.push('/auth/signin')
     } finally {
       setIsSigningOut(false)
     }

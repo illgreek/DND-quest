@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { heroClasses } from '@/lib/heroClasses'
 import { SearchIcon, UserPlusIcon, CheckIcon, XIcon, SparklesIcon, ArrowLeftIcon } from 'lucide-react'
@@ -29,6 +30,7 @@ type TabType = 'search' | 'my-heroes'
 
 export default function Heroes() {
   const { data: session, status } = useSession()
+  const pathname = usePathname()
   const [heroes, setHeroes] = useState<Hero[]>([])
   const [friendships, setFriendships] = useState<Friendship[]>([])
   const [loading, setLoading] = useState(true)
@@ -172,6 +174,11 @@ export default function Heroes() {
   }
 
   if (!session) {
+    // Якщо користувач вже на сторінці входу, не показуємо повідомлення про доступ
+    if (pathname.startsWith('/auth/')) {
+      return null
+    }
+    
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { getHeroClassLabel } from '@/lib/heroClasses'
@@ -18,6 +18,7 @@ interface Friend {
 export default function CreateQuestForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const pathname = usePathname()
   const { data: session, status } = useSession()
   const [friends, setFriends] = useState<Friend[]>([])
   const [loadingFriends, setLoadingFriends] = useState(false)
@@ -133,6 +134,11 @@ export default function CreateQuestForm() {
   }
 
   if (!session) {
+    // Якщо користувач вже на сторінці входу, не показуємо повідомлення про доступ
+    if (pathname.startsWith('/auth/')) {
+      return null
+    }
+    
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">

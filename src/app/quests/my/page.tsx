@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { getHeroClassLabel } from '@/lib/heroClasses'
 import { SearchIcon, FilterIcon, PlusIcon, ClockIcon, CheckIcon, XIcon, SparklesIcon, SwordIcon, CoinsIcon, UserIcon, ArrowLeftIcon } from 'lucide-react'
@@ -39,6 +40,7 @@ type TabType = 'all' | 'assigned' | 'created'
 
 export default function MyQuests() {
   const { data: session, status } = useSession()
+  const pathname = usePathname()
   const [quests, setQuests] = useState<Quest[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -179,6 +181,11 @@ export default function MyQuests() {
   }
 
   if (!session) {
+    // Якщо користувач вже на сторінці входу, не показуємо повідомлення про доступ
+    if (pathname.startsWith('/auth/')) {
+      return null
+    }
+    
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">

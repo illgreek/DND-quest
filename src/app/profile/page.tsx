@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import { usePathname } from 'next/navigation'
 import { getHeroClassLabel, getHeroClassEmoji, heroClasses } from '@/lib/heroClasses'
 import { UserIcon, SwordIcon, CoinsIcon, SparklesIcon, TrophyIcon, StarIcon, ShieldIcon, ZapIcon, ScrollIcon, ArrowLeftIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -17,6 +18,7 @@ interface UserStats {
 
 export default function Profile() {
   const { data: session, status } = useSession()
+  const pathname = usePathname()
   const [stats, setStats] = useState<UserStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -68,6 +70,11 @@ export default function Profile() {
   }
 
   if (!session) {
+    // Якщо користувач вже на сторінці входу, не показуємо повідомлення про доступ
+    if (pathname.startsWith('/auth/')) {
+      return null
+    }
+    
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
