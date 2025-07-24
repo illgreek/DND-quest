@@ -154,13 +154,13 @@ export default function CreateQuestForm() {
         <div className="text-center">
           <div className="w-16 h-16 mx-auto mb-4 relative">
             <div className="absolute inset-0 animate-spin">
-              <div className="w-full h-full border-4 border-transparent border-t-[#a48fff] border-r-[#624cab] rounded-full"></div>
+              <div className="w-full h-full border-4 border-transparent border-t-theme-accent border-r-theme-primary rounded-full"></div>
             </div>
-            <div className="absolute inset-2 bg-[#252838] rounded-full flex items-center justify-center">
-              <span className="text-[#a48fff] text-xs font-bold">⚔️</span>
+            <div className="absolute inset-2 bg-theme-surface rounded-full flex items-center justify-center">
+              <span className="text-theme-accent text-xs font-bold">⚔️</span>
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-[#d4c6ff] mb-2">
+          <h2 className="text-2xl font-bold text-gray-100 mb-2">
             Завантаження пригод...
           </h2>
           <p className="text-gray-300">
@@ -184,7 +184,7 @@ export default function CreateQuestForm() {
           <p className="text-gray-300 mb-4">Потрібно увійти для створення квестів</p>
           <Link 
             href="/auth/signin"
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg rounded-lg transition-all duration-200 transform hover:scale-105"
+            className="inline-flex items-center px-6 py-3 bg-gradient-theme text-gray-100 hover:bg-gradient-theme-hover border border-theme-primary shadow-lg rounded-lg transition-all duration-200 transform hover:scale-105"
           >
             <span className="mr-2">⚔️</span>
             Увійти в систему
@@ -195,38 +195,38 @@ export default function CreateQuestForm() {
   }
 
   return (
-    <div className="min-h-screen bg-[#1a1b26] text-gray-100 relative overflow-hidden">
+    <div className="min-h-screen bg-theme-background text-gray-100 relative overflow-hidden">
       {/* Background decorative elements */}
       {/* Floating magical orbs */}
-      <div className="absolute top-32 left-8 w-2 h-2 bg-[#624cab] rounded-full opacity-15 animate-pulse animation-delay-1000"></div>
-      <div className="absolute top-16 right-12 w-1 h-1 bg-[#a48fff] rounded-full opacity-20 animate-pulse animation-delay-1500"></div>
-      <div className="absolute bottom-32 left-16 w-3 h-3 bg-[#3d2b6b] rounded-full opacity-10 animate-pulse animation-delay-800"></div>
-      <div className="absolute bottom-16 right-8 w-1 h-1 bg-[#d4c6ff] rounded-full opacity-15 animate-pulse animation-delay-1200"></div>
+      <div className="absolute top-32 left-8 w-2 h-2 bg-theme-primary rounded-full opacity-15 animate-pulse animation-delay-1000"></div>
+      <div className="absolute top-16 right-12 w-1 h-1 bg-theme-accent rounded-full opacity-20 animate-pulse animation-delay-1500"></div>
+      <div className="absolute bottom-32 left-16 w-3 h-3 bg-theme-accent rounded-full opacity-10 animate-pulse animation-delay-800"></div>
+      <div className="absolute bottom-16 right-8 w-1 h-1 bg-theme-text rounded-full opacity-15 animate-pulse animation-delay-1200"></div>
       
       {/* Mystical runes and symbols - moved to top and bottom only */}
-      <div className="absolute top-8 left-1/4 text-[#624cab] opacity-4 text-2xl">⚔️</div>
-      <div className="absolute bottom-8 right-1/3 text-[#a48fff] opacity-3 text-xl">🏰</div>
+      <div className="absolute top-8 left-1/4 text-theme-primary opacity-4 text-2xl">⚔️</div>
+      <div className="absolute bottom-8 right-1/3 text-theme-accent opacity-3 text-xl">🏰</div>
       
       {/* Subtle grid pattern */}
-      <div className="absolute inset-0 opacity-3">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
-        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
-        <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
-        <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-px bg-grid-theme"></div>
+        <div className="absolute top-1/4 left-0 w-full h-px bg-grid-theme"></div>
+        <div className="absolute top-1/2 left-0 w-full h-px bg-grid-theme"></div>
+        <div className="absolute top-3/4 left-0 w-full h-px bg-grid-theme"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-grid-theme"></div>
         
-        <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
-        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
-        <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
-        <div className="absolute top-0 left-3/4 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
-        <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-0 left-0 w-px h-full bg-grid-theme"></div>
+        <div className="absolute top-0 left-1/4 w-px h-full bg-grid-theme"></div>
+        <div className="absolute top-0 left-1/2 w-px h-full bg-grid-theme"></div>
+        <div className="absolute top-0 left-3/4 w-px h-full bg-grid-theme"></div>
+        <div className="absolute top-0 right-0 w-px h-full bg-grid-theme"></div>
       </div>
       
       {/* Corner decorative elements */}
-      <div className="absolute top-0 left-0 w-24 h-24 border-l border-t border-[#624cab] opacity-12"></div>
-      <div className="absolute top-0 right-0 w-24 h-24 border-r border-t border-[#624cab] opacity-12"></div>
-      <div className="absolute bottom-0 left-0 w-24 h-24 border-l border-b border-[#624cab] opacity-12"></div>
-      <div className="absolute bottom-0 right-0 w-24 h-24 border-r border-b border-[#624cab] opacity-12"></div>
+      <div className="absolute top-0 left-0 w-24 h-24 border-l border-t border-theme-primary opacity-12"></div>
+      <div className="absolute top-0 right-0 w-24 h-24 border-r border-t border-theme-primary opacity-12"></div>
+      <div className="absolute bottom-0 left-0 w-24 h-24 border-l border-b border-theme-primary opacity-12"></div>
+      <div className="absolute bottom-0 right-0 w-24 h-24 border-r border-b border-theme-primary opacity-12"></div>
 
       <div className="container mx-auto px-4 py-8 relative z-10">
         <div className="max-w-2xl mx-auto">
@@ -235,14 +235,14 @@ export default function CreateQuestForm() {
             <div className="flex items-center justify-center mb-4">
               <Link 
                 href="/quests/my"
-                className="mr-4 p-2 rounded-lg bg-[#252838] border border-[#4a4257] hover:border-[#624cab] transition-colors"
+                className="mr-4 p-2 rounded-lg bg-theme-surface border border-theme-border hover:border-theme-primary transition-colors"
               >
-                <ArrowLeftIcon size={20} className="text-[#a48fff]" />
+                <ArrowLeftIcon size={20} className="text-theme-accent" />
               </Link>
-              <h1 className="text-4xl font-bold text-[#d4c6ff] drop-shadow-lg">
+              <h1 className="text-4xl font-bold text-gray-100 drop-shadow-lg">
                 Створити Новий Квест
               </h1>
-              <div className="ml-2 text-3xl text-[#a48fff] opacity-80">⚔️</div>
+              <div className="ml-2 text-3xl text-theme-accent opacity-80">⚔️</div>
             </div>
             <p className="text-xl text-gray-300">
               Перетвори свою справу на епічну місію!
@@ -257,46 +257,46 @@ export default function CreateQuestForm() {
 
           <form onSubmit={handleSubmit} className="relative rounded-xl overflow-hidden transform transition-all duration-300">
             {/* Decorative border with magical effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[2px] rounded-xl overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-theme p-[2px] rounded-xl overflow-hidden">
               {/* Top-right corner decoration */}
-              <div className="absolute top-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-bl-xl border-b border-l border-[#7a63d4]">
-                <SparklesIcon size={12} className="text-[#a48fff]" />
+              <div className="absolute top-0 right-0 w-8 h-8 bg-theme-accent flex items-center justify-center rounded-bl-xl border-b border-l border-theme-primary">
+                <SparklesIcon size={12} className="text-theme-accent" />
               </div>
               {/* Top-left corner decoration */}
-              <div className="absolute top-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-br-xl border-b border-r border-[#7a63d4]">
-                <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+              <div className="absolute top-0 left-0 w-8 h-8 bg-theme-accent flex items-center justify-center rounded-br-xl border-b border-r border-theme-primary">
+                <div className="w-2 h-2 bg-theme-accent rounded-full opacity-60"></div>
               </div>
               {/* Bottom-right corner decoration */}
-              <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tl-xl border-t border-l border-[#7a63d4]">
-                <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+              <div className="absolute bottom-0 right-0 w-8 h-8 bg-theme-accent flex items-center justify-center rounded-tl-xl border-t border-l border-theme-primary">
+                <div className="w-2 h-2 bg-theme-accent rounded-full opacity-60"></div>
               </div>
               {/* Bottom-left corner decoration */}
-              <div className="absolute bottom-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tr-xl border-t border-r border-[#7a63d4]">
-                <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+              <div className="absolute bottom-0 left-0 w-8 h-8 bg-theme-accent flex items-center justify-center rounded-tr-xl border-t border-r border-theme-primary">
+                <div className="w-2 h-2 bg-theme-accent rounded-full opacity-60"></div>
               </div>
               
               {/* Magical sparkles */}
-              <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
-              <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
-              <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
-              <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+              <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse"></div>
+              <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse animation-delay-300"></div>
+              <div className="absolute top-2 left-2 w-1 h-1 bg-theme-accent rounded-full animate-pulse animation-delay-200"></div>
+              <div className="absolute top-2 right-2 w-1 h-1 bg-theme-accent rounded-full animate-pulse animation-delay-400"></div>
             </div>
             
             {/* Card content */}
-            <div className="bg-[#252838] p-6 rounded-xl relative z-10 space-y-6">
+            <div className="bg-theme-surface p-6 rounded-xl relative z-10 space-y-6">
               <div>
-                <label className="block text-[#a48fff] mb-2">Назва квесту</label>
+                <label className="block text-theme-accent mb-2">Назва квесту</label>
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
-                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
-                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                  <div className="absolute inset-0 bg-gradient-theme p-[1px] rounded-lg overflow-hidden">
+                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse"></div>
+                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse animation-delay-300"></div>
                   </div>
-                  <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                  <div className="relative bg-theme-background rounded-lg p-[1px]">
                     <input
                       type="text"
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      className="w-full p-3 bg-[#1a1d29] rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none transition-colors"
+                      className="w-full p-3 bg-theme-background rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none transition-colors"
                       placeholder="Наприклад: Купити хліб і молоко"
                       required
                     />
@@ -305,17 +305,17 @@ export default function CreateQuestForm() {
               </div>
 
               <div>
-                <label className="block text-[#a48fff] mb-2">Опис квесту</label>
+                <label className="block text-theme-accent mb-2">Опис квесту</label>
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
-                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
-                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                  <div className="absolute inset-0 bg-gradient-theme p-[1px] rounded-lg overflow-hidden">
+                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse"></div>
+                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse animation-delay-300"></div>
                   </div>
-                  <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                  <div className="relative bg-theme-background rounded-lg p-[1px]">
                     <textarea
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      className="w-full p-3 bg-[#1a1d29] rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none transition-colors h-32 resize-none"
+                      className="w-full p-3 bg-theme-background rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none transition-colors h-32 resize-none"
                       placeholder="Детальний опис того, що потрібно зробити..."
                       required
                     />
@@ -324,17 +324,17 @@ export default function CreateQuestForm() {
               </div>
 
               <div>
-                <label className="block text-[#a48fff] mb-2">Категорія</label>
+                <label className="block text-theme-accent mb-2">Категорія</label>
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
-                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
-                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                  <div className="absolute inset-0 bg-gradient-theme p-[1px] rounded-lg overflow-hidden">
+                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse"></div>
+                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse animation-delay-300"></div>
                   </div>
-                  <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                  <div className="relative bg-theme-background rounded-lg p-[1px]">
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full p-3 pr-8 bg-[#1a1d29] rounded-lg text-gray-100 focus:outline-none transition-colors appearance-none"
+                      className="w-full p-3 pr-8 bg-theme-background rounded-lg text-gray-100 focus:outline-none transition-colors appearance-none"
                     >
                       {categories.map((category) => (
                         <option key={category.value} value={category.value}>
@@ -343,7 +343,7 @@ export default function CreateQuestForm() {
                       ))}
                     </select>
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                      <svg className="w-4 h-4 text-[#a48fff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-theme-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </div>
@@ -352,7 +352,7 @@ export default function CreateQuestForm() {
               </div>
 
               <div>
-                <label className="block text-[#a48fff] mb-2 flex items-center">
+                <label className="block text-theme-accent mb-2 flex items-center">
                   <SwordIcon size={14} className="mr-2" />
                   Складність
                 </label>
@@ -364,8 +364,8 @@ export default function CreateQuestForm() {
                       onClick={() => handleDifficultyChange(difficulty.value)}
                       className={`p-3 rounded-lg border transition-all duration-200 transform hover:scale-105 ${
                         formData.difficulty === difficulty.value
-                          ? 'border-[#a48fff] bg-[#2a2d3d] shadow-lg'
-                          : 'border-[#4a4257] bg-[#1a1d29] hover:border-[#624cab]'
+                          ? 'border-theme-accent bg-theme-surface shadow-lg'
+                          : 'border-theme-border bg-theme-background hover:border-theme-primary'
                       }`}
                     >
                       <div className="text-2xl mb-1">{difficulty.emoji}</div>
@@ -380,21 +380,21 @@ export default function CreateQuestForm() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[#a48fff] mb-2 flex items-center">
+                  <label className="block text-theme-accent mb-2 flex items-center">
                     <MapPinIcon size={14} className="mr-2" />
                     Місце виконання
                   </label>
                   <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
-                      <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
-                      <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                    <div className="absolute inset-0 bg-gradient-theme p-[1px] rounded-lg overflow-hidden">
+                      <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse"></div>
+                      <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse animation-delay-300"></div>
                     </div>
-                    <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                    <div className="relative bg-theme-background rounded-lg p-[1px]">
                       <input
                         type="text"
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                        className="w-full p-3 bg-[#1a1d29] rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none transition-colors"
+                        className="w-full p-3 bg-theme-background rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none transition-colors"
                         placeholder="Наприклад: Супермаркет, дім, офіс"
                       />
                     </div>
@@ -402,24 +402,24 @@ export default function CreateQuestForm() {
                 </div>
 
                 <div>
-                  <label className="block text-[#a48fff] mb-2 flex items-center">
-                    <ClockIcon size={14} className="mr-2 text-[#a48fff]" />
+                  <label className="block text-theme-accent mb-2 flex items-center">
+                    <ClockIcon size={14} className="mr-2 text-theme-accent" />
                     Дедлайн
                   </label>
                   <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
-                      <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
-                      <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                    <div className="absolute inset-0 bg-gradient-theme p-[1px] rounded-lg overflow-hidden">
+                      <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse"></div>
+                      <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse animation-delay-300"></div>
                     </div>
-                    <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                    <div className="relative bg-theme-background rounded-lg p-[1px]">
                       <input
                         type="datetime-local"
                         value={formData.dueDate}
                         onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                        className="w-full p-3 pr-10 bg-[#1a1d29] rounded-lg text-gray-100 focus:outline-none transition-colors [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-datetime-edit]:text-gray-100"
+                        className="w-full p-3 pr-10 bg-theme-background rounded-lg text-gray-100 focus:outline-none transition-colors [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-datetime-edit]:text-gray-100"
                       />
                       <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                        <svg className="w-4 h-4 text-[#a48fff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-theme-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                       </div>
@@ -434,7 +434,7 @@ export default function CreateQuestForm() {
                   id="isUrgent"
                   checked={formData.isUrgent}
                   onChange={(e) => setFormData({ ...formData, isUrgent: e.target.checked })}
-                  className="w-4 h-4 text-[#a48fff] bg-[#1a1d29] border-[#4a4257] rounded focus:ring-[#a48fff]"
+                  className="w-4 h-4 text-theme-accent bg-theme-background border-theme-border rounded focus:ring-theme-accent"
                 />
                 <label htmlFor="isUrgent" className="text-gray-300">
                   Терміновий квест ⚡
@@ -443,13 +443,13 @@ export default function CreateQuestForm() {
 
               {/* Assign to specific hero */}
               <div>
-                <label className="block text-[#a48fff] mb-2">Призначити квест</label>
+                <label className="block text-theme-accent mb-2">Призначити квест</label>
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
-                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
-                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                  <div className="absolute inset-0 bg-gradient-theme p-[1px] rounded-lg overflow-hidden">
+                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse"></div>
+                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-theme-text rounded-full animate-pulse animation-delay-300"></div>
                   </div>
-                  <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                  <div className="relative bg-theme-background rounded-lg p-[1px]">
                     <select
                       value={formData.assignTo}
                       onChange={(e) => {
@@ -459,7 +459,7 @@ export default function CreateQuestForm() {
                         })
                         setFormData({ ...formData, assignTo: e.target.value })
                       }}
-                      className="w-full p-3 pr-8 bg-[#1a1d29] rounded-lg text-gray-100 focus:outline-none transition-colors appearance-none"
+                      className="w-full p-3 pr-8 bg-theme-background rounded-lg text-gray-100 focus:outline-none transition-colors appearance-none"
                     >
                       <option value="self">Собі (я буду виконувати)</option>
                       {loadingFriends ? (
@@ -475,7 +475,7 @@ export default function CreateQuestForm() {
                       )}
                     </select>
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                      <svg className="w-4 h-4 text-[#a48fff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-theme-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </div>
@@ -483,7 +483,7 @@ export default function CreateQuestForm() {
                 </div>
                 {friends.length === 0 && !loadingFriends && (
                   <p className="text-sm text-gray-400 mt-2">
-                    <Link href="/heroes" className="text-[#a48fff] hover:text-[#d4c6ff]">
+                    <Link href="/heroes" className="text-theme-accent hover:text-theme-text">
                       Знайти героїв
                     </Link> щоб призначати квести друзям
                   </p>
@@ -494,7 +494,7 @@ export default function CreateQuestForm() {
                   </p>
                 )}
                 {formData.assignTo && formData.assignTo !== 'self' && (
-                  <p className="text-sm text-[#a48fff] mt-2">
+                  <p className="text-sm text-theme-accent mt-2">
                     📤 Квест буде надіслано вашому другу. Він зможе його прийняти!
                     {(() => {
                       const selectedFriend = friends.find(f => f.id === formData.assignTo)
@@ -508,8 +508,8 @@ export default function CreateQuestForm() {
                 )}
               </div>
 
-              <div className="bg-[#1a1d29] rounded-lg p-4 border border-[#4a4257]">
-                <h3 className="text-lg font-bold text-[#d4c6ff] mb-2 flex items-center">
+              <div className="bg-theme-background rounded-lg p-4 border border-theme-border">
+                <h3 className="text-lg font-bold text-gray-100 mb-2 flex items-center">
                   <SparklesIcon size={16} className="mr-2" />
                   Нагороди за квест
                 </h3>
@@ -531,10 +531,10 @@ export default function CreateQuestForm() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="relative font-medium tracking-wide rounded-lg flex items-center justify-center text-sm py-3 px-6 flex-1 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
+                  className="relative font-medium tracking-wide rounded-lg flex items-center justify-center text-sm py-3 px-6 flex-1 bg-gradient-theme text-gray-100 hover:bg-gradient-theme-hover border border-theme-primary shadow-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
                 >
-                  <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
-                  <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                  <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-theme-accent opacity-50 rounded-full"></span>
+                  <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-theme-accent opacity-50 rounded-full"></span>
                   {loading ? 'Створення...' : 'Створити Квест'}
                 </button>
                 <Link

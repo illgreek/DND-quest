@@ -5,12 +5,27 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Класові кольори (будуть перевизначені динамічно) */
+  --class-primary: #624cab;
+  --class-secondary: #a48fff;
+  --class-accent: #3d2b6b;
+  --class-highlight: #fef2f2;
+  --class-text: #624cab;
+  --class-bg: #1f1f1f;
+  --class-border: #624cab;
+  
+  /* Додаткові кольори для інтерфейсу */
+  --class-surface: #252838;
+  --class-background: #1a1d29;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: 'Metamorphous', serif;
-  background-color: #1a1d29;
-  color: #e2e8f0;
+  background-color: var(--class-background);
+  color: var(--class-text);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -28,12 +43,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3d2b6b;
+  background: var(--class-primary);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #624cab;
+  background: var(--class-accent);
 }
 
 /* Animation delays */
@@ -51,12 +66,12 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Magical glow effect for special elements */
 .magical-glow {
-  box-shadow: 0 0 10px 2px rgba(164, 143, 255, 0.3);
+  box-shadow: 0 0 10px 2px var(--class-accent);
 }
 
 /* Animated background for special sections */
 .magical-bg {
-  background: linear-gradient(45deg, #3d2b6b, #624cab, #3d2b6b);
+  background: linear-gradient(45deg, var(--class-secondary), var(--class-primary), var(--class-secondary));
   background-size: 200% 200%;
   animation: gradientBG 10s ease infinite;
 }
@@ -75,7 +90,41 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Custom button styles */
 .btn-primary {
-  @apply bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg;
+  background: linear-gradient(to right, var(--class-primary), var(--class-secondary));
+  color: #f3f4f6;
+  border: 1px solid var(--class-accent);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(to right, var(--class-accent), var(--class-primary));
+}
+
+/* Theme-aware button styles */
+.btn-theme {
+  background: linear-gradient(to right, var(--class-primary), var(--class-secondary));
+  color: #f3f4f6;
+  border: 1px solid var(--class-accent);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.btn-theme:hover {
+  background: linear-gradient(to right, var(--class-accent), var(--class-primary));
+}
+
+/* Override Tailwind button styles with theme colors */
+.btn {
+  background: linear-gradient(to right, var(--class-primary), var(--class-secondary)) !important;
+  color: #f3f4f6 !important;
+  border: 1px solid var(--class-accent) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.2s !important;
+}
+
+.btn:hover {
+  background: linear-gradient(to right, var(--class-accent), var(--class-primary)) !important;
 }
 
 .btn-secondary {
@@ -88,7 +137,9 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Card styles */
 .card-magical {
-  @apply bg-[#252838] border border-[#4a4257] rounded-lg;
+  background-color: var(--class-surface);
+  border: 1px solid var(--class-border);
+  border-radius: 0.5rem;
 }
 
 .card-magical-border {
@@ -97,28 +148,119 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-magical-border::before {
   content: '';
-  @apply absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, var(--class-border), var(--class-primary), var(--class-secondary));
+  padding: 1px;
+  border-radius: 0.5rem;
+  overflow: hidden;
   z-index: 0;
 }
 
 .card-magical-content {
-  @apply relative z-10 bg-[#252838] rounded-lg;
+  position: relative;
+  z-index: 10;
+  background-color: var(--class-surface);
+  border-radius: 0.5rem;
 }
 
 /* Input styles */
 .input-magical {
-  @apply bg-[#1a1d29] text-gray-200 border border-[#4a4257] focus:border-[#624cab] focus:ring-2 focus:ring-[#624cab] outline-none;
+  background-color: #1a1d29;
+  color: #e5e7eb;
+  border: 1px solid var(--class-border);
+  outline: none;
+}
+
+.input-magical:focus {
+  border-color: var(--class-primary);
+  box-shadow: 0 0 0 2px var(--class-accent);
 }
 
 /* Text colors */
 .text-primary {
-  @apply text-[#d4c6ff];
+  color: var(--class-text);
 }
 
 .text-secondary {
-  @apply text-[#a48fff];
+  color: var(--class-accent);
 }
 
 .text-muted {
-  @apply text-gray-300;
+  color: #d1d5db;
+}
+
+/* Theme-aware background colors */
+.bg-theme-primary {
+  background-color: var(--class-primary);
+}
+
+.bg-theme-secondary {
+  background-color: var(--class-secondary);
+}
+
+.bg-theme-accent {
+  background-color: var(--class-accent);
+}
+
+.bg-theme-surface {
+  background-color: var(--class-surface);
+}
+
+.bg-theme-background {
+  background-color: var(--class-background);
+}
+
+/* Theme-aware border colors */
+.border-theme-primary {
+  border-color: var(--class-primary);
+}
+
+.border-theme-secondary {
+  border-color: var(--class-secondary);
+}
+
+.border-theme-accent {
+  border-color: var(--class-accent);
+}
+
+.border-theme-border {
+  border-color: var(--class-border);
+}
+
+/* Theme-aware text colors */
+.text-theme-primary {
+  color: var(--class-primary);
+}
+
+.text-theme-secondary {
+  color: var(--class-secondary);
+}
+
+.text-theme-accent {
+  color: var(--class-accent);
+}
+
+.text-theme-text {
+  color: var(--class-text);
+}
+
+/* Theme-aware gradients */
+.bg-gradient-theme {
+  background: linear-gradient(to right, var(--class-primary), var(--class-secondary));
+}
+
+.bg-gradient-theme-hover {
+  background: linear-gradient(to right, var(--class-accent), var(--class-primary));
+}
+
+/* Theme-aware grid pattern - darkened for better visibility */
+.bg-grid-theme {
+  background: linear-gradient(to right, var(--class-primary), var(--class-secondary));
+  opacity: 0.1;
+}
+
+/* Force re-render on theme change */
+* {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }

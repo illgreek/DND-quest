@@ -4,7 +4,15 @@ import bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, password, heroName, heroClass } = await request.json()
+    const { name, email, password, heroName, heroClass, themeType } = await request.json()
+
+    console.log('Signup request:', {
+      name,
+      email,
+      heroName,
+      heroClass,
+      themeType
+    })
 
     // Validation
     if (!name || !email || !password || !heroName) {
@@ -30,7 +38,15 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await bcrypt.hash(password, 12)
 
     // Create user
-    await prisma.user.create({
+    console.log('Creating user with data:', {
+      name,
+      email,
+      heroName,
+      heroClass: heroClass || 'Warrior',
+      themeType: themeType || 'STANDARD'
+    })
+
+    const user = await prisma.user.create({
       data: {
         name,
         email,
@@ -39,8 +55,14 @@ export async function POST(request: NextRequest) {
         heroClass: heroClass || 'Warrior',
         heroLevel: 1,
         experience: 0,
-        gold: 0
+        gold: 0,
+        themeType: themeType || 'STANDARD'
       }
+    })
+
+    console.log('User created successfully:', {
+      id: user.id,
+      themeType: user.themeType
     })
 
     return NextResponse.json(

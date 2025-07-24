@@ -105,12 +105,12 @@ export default function Navigation() {
 
   if (status === 'loading') {
     return (
-      <nav className="bg-[#10131c] border-r border-[#4a4257] w-64 flex-shrink-0 hidden md:flex flex-col">
-        <div className="p-4 flex items-center border-b border-[#4a4257]">
-          <div className="w-10 h-10 rounded-lg bg-[#3d2b6b] flex items-center justify-center mr-3 border border-[#624cab]">
-            <div className="w-6 h-6 border-2 border-[#a48fff] border-t-transparent rounded-full animate-spin"></div>
+      <nav className="bg-theme-background border-r border-theme-border w-64 flex-shrink-0 hidden md:flex flex-col">
+        <div className="p-4 flex items-center border-b border-theme-border">
+          <div className="w-10 h-10 rounded-lg bg-theme-accent flex items-center justify-center mr-3 border border-theme-primary">
+            <div className="w-6 h-6 border-2 border-theme-accent border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <h1 className="text-xl text-[#d4c6ff] font-bold tracking-wider">DND Quests</h1>
+          <h1 className="text-xl text-theme-text font-bold tracking-wider">DND Quests</h1>
         </div>
       </nav>
     )
@@ -119,32 +119,32 @@ export default function Navigation() {
   return (
     <>
       {/* Desktop Sidebar Navigation */}
-      <aside className="hidden md:flex flex-col w-64 bg-[#10131c] border-r border-[#4a4257] relative z-10">
+      <aside className="hidden md:flex flex-col w-64 bg-theme-background border-r border-theme-border relative z-10">
         {/* Logo area */}
-        <div className="p-4 flex items-center border-b border-[#4a4257]">
-          <div className="w-10 h-10 rounded-lg bg-[#3d2b6b] flex items-center justify-center mr-3 border border-[#624cab]">
+        <div className="p-4 flex items-center border-b border-theme-border">
+          <div className="w-10 h-10 rounded-lg bg-theme-accent flex items-center justify-center mr-3 border border-theme-primary">
             <span className="text-yellow-400 text-xl">⚔️</span>
           </div>
-          <h1 className="text-xl text-[#d4c6ff] font-bold tracking-wider">
+          <h1 className="text-xl text-theme-text font-bold tracking-wider">
             DND Quests
           </h1>
         </div>
 
         {/* User profile summary */}
         {session && (
-          <div className="p-4 border-b border-[#4a4257] bg-[#141824]">
+          <div className="p-4 border-b border-theme-border bg-theme-surface">
             <div className="flex items-center">
-              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#624cab] mr-3 bg-[#3d2b6b] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-theme-primary mr-3 bg-theme-accent flex items-center justify-center">
                 <span className="text-2xl">{getHeroClassEmoji(session.user.heroClass || '')}</span>
               </div>
               <div>
-                <div className="text-[#d4c6ff] font-bold">{session.user.heroName || session.user.name}</div>
+                <div className="text-theme-text font-bold">{session.user.heroName || session.user.name}</div>
                 <div className="flex items-center text-xs text-gray-400">
                   <span>Lvl {session.user.heroLevel}</span>
                   <span className="mx-1">•</span>
                   <span>{getHeroClassLabel(session.user.heroClass || '')}</span>
                 </div>
-                <div className="text-xs text-[#a48fff] mt-1">
+                <div className="text-xs text-theme-accent mt-1">
                   {(() => {
                     const currentLevel = getCurrentLevel(session.user.heroClass || 'Warrior', session.user.experience || 0)
                     return currentLevel.title
@@ -165,14 +165,14 @@ export default function Navigation() {
                 return (
                   <>
                     <div className="flex justify-between text-xs mb-1">
-                      <span className="text-[#a48fff]">Прогрес</span>
+                      <span className="text-theme-accent">Прогрес</span>
                       <span className="text-gray-400">
                         {experience} / {nextLevel ? nextLevel.experienceRequired : currentLevel.experienceRequired} XP
                       </span>
                     </div>
-                    <div className="w-full bg-[#1a1d29] rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-theme-background rounded-full h-2 overflow-hidden">
                       <div 
-                        className="bg-gradient-to-r from-[#624cab] to-[#a48fff] h-full rounded-full transition-all duration-300" 
+                        className="bg-gradient-theme h-full rounded-full transition-all duration-300" 
                         style={{ width: `${progress}%` }}
                       ></div>
                     </div>
@@ -223,7 +223,7 @@ export default function Navigation() {
           {/* Secondary Navigation */}
           {session && (
             <div className="px-4 mt-8 space-y-2">
-              <div className="text-xs text-[#a48fff] font-medium mb-2 px-2">Акаунт</div>
+              <div className="text-xs text-theme-accent font-medium mb-2 px-2">Акаунт</div>
               
               <NavButton
                 icon={<UserIcon size={20} />}
@@ -238,13 +238,13 @@ export default function Navigation() {
                 className={`w-full flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
                   isSigningOut 
                     ? 'text-gray-500 cursor-not-allowed' 
-                    : 'text-gray-300 hover:bg-[#2a2d3d] hover:text-[#d4c6ff]'
+                    : 'text-gray-300 hover:bg-theme-surface hover:text-theme-text'
                 }`}
               >
                 {isSigningOut ? (
-                  <div className="w-5 h-5 border-2 border-[#a48fff] border-t-transparent rounded-full animate-spin mr-3"></div>
+                  <div className="w-5 h-5 border-2 border-theme-accent border-t-transparent rounded-full animate-spin mr-3"></div>
                 ) : (
-                  <LogOutIcon size={20} className="mr-3 text-[#a48fff]" />
+                  <LogOutIcon size={20} className="mr-3 text-theme-accent" />
                 )}
                 {isSigningOut ? 'Вихід...' : 'Вийти'}
               </button>
@@ -254,12 +254,12 @@ export default function Navigation() {
       </aside>
 
       {/* Mobile Navigation */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#10131c] border-t border-[#4a4257] z-50">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-theme-background border-t border-theme-border z-50">
         <div className="flex justify-around py-2">
           <Link 
             href="/" 
             className={`flex flex-col items-center p-2 transition-colors ${
-              isActivePage('/') ? 'text-[#d4c6ff] bg-[#2a2d3d] rounded-md' : 'text-[#a48fff]'
+              isActivePage('/') ? 'text-theme-text bg-theme-surface rounded-md' : 'text-theme-accent'
             }`}
           >
             <HomeIcon size={20} />
@@ -271,7 +271,7 @@ export default function Navigation() {
               <Link 
                 href="/quests/my" 
                 className={`flex flex-col items-center p-2 transition-colors ${
-                  isActivePage('/quests/my') ? 'text-[#d4c6ff] bg-[#2a2d3d] rounded-md' : 'text-[#a48fff]'
+                  isActivePage('/quests/my') ? 'text-theme-text bg-theme-surface rounded-md' : 'text-theme-accent'
                 }`}
               >
                 <ScrollIcon size={20} />
@@ -281,7 +281,7 @@ export default function Navigation() {
               <Link 
                 href="/heroes" 
                 className={`flex flex-col items-center p-2 transition-colors relative ${
-                  isActivePage('/heroes') ? 'text-[#d4c6ff] bg-[#2a2d3d] rounded-md' : 'text-[#a48fff]'
+                  isActivePage('/heroes') ? 'text-theme-text bg-theme-surface rounded-md' : 'text-theme-accent'
                 }`}
               >
                 <UsersIcon size={20} />
@@ -296,7 +296,7 @@ export default function Navigation() {
               <Link 
                 href="/quests/create" 
                 className={`flex flex-col items-center p-2 transition-colors ${
-                  isActivePage('/quests/create') ? 'text-[#d4c6ff] bg-[#2a2d3d] rounded-md' : 'text-[#a48fff]'
+                  isActivePage('/quests/create') ? 'text-theme-text bg-theme-surface rounded-md' : 'text-theme-accent'
                 }`}
               >
                 <PlusIcon size={20} />
@@ -306,7 +306,7 @@ export default function Navigation() {
               <Link 
                 href="/profile" 
                 className={`flex flex-col items-center p-2 transition-colors ${
-                  isActivePage('/profile') ? 'text-[#d4c6ff] bg-[#2a2d3d] rounded-md' : 'text-[#a48fff]'
+                  isActivePage('/profile') ? 'text-theme-text bg-theme-surface rounded-md' : 'text-theme-accent'
                 }`}
               >
                 <UserIcon size={20} />
@@ -334,11 +334,11 @@ function NavButton({ icon, label, href, isActive, badge }: NavButtonProps) {
       href={href}
       className={`flex items-center px-3 py-2 text-sm rounded-md transition-colors relative ${
         isActive 
-          ? 'bg-[#2a2d3d] text-[#d4c6ff] border border-[#624cab]' 
-          : 'text-gray-300 hover:bg-[#2a2d3d] hover:text-[#d4c6ff]'
+          ? 'bg-theme-surface text-theme-text border border-theme-primary' 
+          : 'text-gray-300 hover:bg-theme-surface hover:text-theme-text'
       }`}
     >
-      <span className="mr-3 text-[#a48fff]">{icon}</span>
+      <span className="mr-3 text-theme-accent">{icon}</span>
       <span className="flex-1">{label}</span>
       {badge && badge > 0 && (
         <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">

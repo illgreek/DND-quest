@@ -19,6 +19,19 @@ export const authOptions: NextAuthOptions = {
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email
+          },
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            password: true,
+            heroName: true,
+            heroClass: true,
+            heroLevel: true,
+            experience: true,
+            gold: true,
+            hasSeenTutorial: true,
+            themeType: true,
           }
         })
 
@@ -45,6 +58,7 @@ export const authOptions: NextAuthOptions = {
           experience: user.experience,
           gold: user.gold,
           hasSeenTutorial: user.hasSeenTutorial,
+          themeType: user.themeType,
         }
       }
     })
@@ -61,10 +75,12 @@ export const authOptions: NextAuthOptions = {
         token.experience = user.experience
         token.gold = user.gold
         token.hasSeenTutorial = user.hasSeenTutorial
+        token.themeType = user.themeType
         
         console.log('NextAuth JWT callback - user data:', {
           userId: user.id,
-          hasSeenTutorial: user.hasSeenTutorial
+          hasSeenTutorial: user.hasSeenTutorial,
+          themeType: user.themeType
         })
       }
       
@@ -74,10 +90,12 @@ export const authOptions: NextAuthOptions = {
         token.experience = session.user.experience
         token.gold = session.user.gold
         token.hasSeenTutorial = session.user.hasSeenTutorial
+        token.themeType = session.user.themeType
         
         console.log('NextAuth JWT callback - session update:', {
           userId: token.sub,
-          hasSeenTutorial: session.user.hasSeenTutorial
+          hasSeenTutorial: session.user.hasSeenTutorial,
+          themeType: session.user.themeType
         })
       }
       
@@ -92,10 +110,12 @@ export const authOptions: NextAuthOptions = {
         session.user.experience = token.experience
         session.user.gold = token.gold
         session.user.hasSeenTutorial = token.hasSeenTutorial
+        session.user.themeType = token.themeType
         
         console.log('NextAuth session callback:', {
           userId: session.user.id,
           hasSeenTutorial: session.user.hasSeenTutorial,
+          themeType: session.user.themeType,
           tokenHasSeenTutorial: token.hasSeenTutorial
         })
       }

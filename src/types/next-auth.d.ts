@@ -13,6 +13,7 @@ declare module "next-auth" {
       experience?: number
       gold?: number
       hasSeenTutorial?: boolean
+      themeType?: string
     }
   }
 
@@ -27,6 +28,7 @@ declare module "next-auth" {
     experience?: number
     gold?: number
     hasSeenTutorial?: boolean
+    themeType?: string
   }
 }
 
@@ -38,5 +40,6 @@ declare module "next-auth/jwt" {
     experience?: number
     gold?: number
     hasSeenTutorial?: boolean
+    themeType?: string
   }
 } 

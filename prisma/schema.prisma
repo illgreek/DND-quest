@@ -59,6 +59,7 @@ model User {
   
   // User preferences
   hasSeenTutorial Boolean @default(false)
+  themeType       String  @default("STANDARD") // STANDARD, CLASS
   
   // Relationships
   accounts      Account[]
