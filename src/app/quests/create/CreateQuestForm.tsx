@@ -147,208 +147,341 @@ export default function CreateQuestForm() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-[#d4c6ff] mb-2">
-            Створити Новий Квест
-          </h1>
-          <p className="text-gray-300">
-            Перетвори свою справу на епічну місію!
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#1a1b26] text-gray-100 relative overflow-hidden">
+      {/* Background decorative elements */}
+      {/* Floating magical orbs */}
+      <div className="absolute top-32 left-8 w-2 h-2 bg-[#624cab] rounded-full opacity-15 animate-pulse animation-delay-1000"></div>
+      <div className="absolute top-16 right-12 w-1 h-1 bg-[#a48fff] rounded-full opacity-20 animate-pulse animation-delay-1500"></div>
+      <div className="absolute bottom-32 left-16 w-3 h-3 bg-[#3d2b6b] rounded-full opacity-10 animate-pulse animation-delay-800"></div>
+      <div className="absolute bottom-16 right-8 w-1 h-1 bg-[#d4c6ff] rounded-full opacity-15 animate-pulse animation-delay-1200"></div>
+      
+      {/* Mystical runes and symbols - moved to top and bottom only */}
+      <div className="absolute top-8 left-1/4 text-[#624cab] opacity-4 text-2xl">⚔️</div>
+      <div className="absolute bottom-8 right-1/3 text-[#a48fff] opacity-3 text-xl">🏰</div>
+      
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 opacity-3">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#624cab] to-transparent"></div>
+        
+        <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-0 left-3/4 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
+        <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-[#624cab] to-transparent"></div>
+      </div>
+      
+      {/* Corner decorative elements */}
+      <div className="absolute top-0 left-0 w-24 h-24 border-l border-t border-[#624cab] opacity-12"></div>
+      <div className="absolute top-0 right-0 w-24 h-24 border-r border-t border-[#624cab] opacity-12"></div>
+      <div className="absolute bottom-0 left-0 w-24 h-24 border-l border-b border-[#624cab] opacity-12"></div>
+      <div className="absolute bottom-0 right-0 w-24 h-24 border-r border-b border-[#624cab] opacity-12"></div>
 
-        {error && (
-          <div className="bg-red-600 text-white p-4 rounded-lg mb-6">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="card-magical-border">
-          <div className="card-magical-content p-6 space-y-6">
-            <div>
-              <label className="block text-[#a48fff] mb-2">Назва квесту</label>
-              <input
-                type="text"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="input-magical w-full p-3 rounded-lg"
-                placeholder="Наприклад: Купити хліб і молоко"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-[#a48fff] mb-2">Опис квесту</label>
-              <textarea
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="input-magical w-full p-3 rounded-lg h-32"
-                placeholder="Детальний опис того, що потрібно зробити..."
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-[#a48fff] mb-2">Категорія</label>
-              <select
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="input-magical w-full p-3 rounded-lg"
-              >
-                {categories.map((category) => (
-                  <option key={category.value} value={category.value}>
-                    {category.emoji} {category.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-[#a48fff] mb-2 flex items-center">
-                <SwordIcon size={14} className="mr-2" />
-                Складність
-              </label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {difficulties.map((difficulty) => (
-                  <button
-                    key={difficulty.value}
-                    type="button"
-                    onClick={() => handleDifficultyChange(difficulty.value)}
-                    className={`p-3 rounded-lg border transition-colors ${
-                      formData.difficulty === difficulty.value
-                        ? 'border-[#a48fff] bg-[#2a2d3d]'
-                        : 'border-[#4a4257] bg-[#1a1d29] hover:border-[#624cab]'
-                    }`}
-                  >
-                    <div className="text-2xl mb-1">{difficulty.emoji}</div>
-                    <div className="text-sm font-bold text-white">{difficulty.label}</div>
-                    <div className="text-xs text-gray-400">
-                      {difficulty.reward} 🪙 | {difficulty.exp} ⭐
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[#a48fff] mb-2 flex items-center">
-                  <MapPinIcon size={14} className="mr-2" />
-                  Місце виконання
-                </label>
-                <input
-                  type="text"
-                  value={formData.location}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  className="input-magical w-full p-3 rounded-lg"
-                  placeholder="Наприклад: Супермаркет, дім, офіс"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[#a48fff] mb-2 flex items-center">
-                  <ClockIcon size={14} className="mr-2" />
-                  Дедлайн
-                </label>
-                <input
-                  type="datetime-local"
-                  value={formData.dueDate}
-                  onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                  className="input-magical w-full p-3 rounded-lg"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <input
-                type="checkbox"
-                id="isUrgent"
-                checked={formData.isUrgent}
-                onChange={(e) => setFormData({ ...formData, isUrgent: e.target.checked })}
-                className="w-4 h-4 text-[#a48fff] bg-[#1a1d29] border-[#4a4257] rounded focus:ring-[#a48fff]"
-              />
-              <label htmlFor="isUrgent" className="text-gray-300">
-                Терміновий квест ⚡
-              </label>
-            </div>
-
-            {/* Assign to specific hero */}
-            <div>
-              <label className="block text-[#a48fff] mb-2">Призначити квест</label>
-              <select
-                value={formData.assignTo}
-                onChange={(e) => setFormData({ ...formData, assignTo: e.target.value })}
-                className="input-magical w-full p-3 rounded-lg"
-              >
-                <option value="self">Собі (я буду виконувати)</option>
-                {loadingFriends ? (
-                  <option disabled>Завантаження друзів...</option>
-                ) : friends.length === 0 ? (
-                  <option disabled>Немає друзів. Спочатку знайдіть героїв!</option>
-                ) : (
-                  friends.map((friend) => (
-                    <option key={friend.id} value={friend.id}>
-                      Другу: {friend.heroName || friend.name} ({getHeroClassLabel(friend.heroClass || '')}) - Рівень {friend.heroLevel}
-                    </option>
-                  ))
-                )}
-              </select>
-              {friends.length === 0 && !loadingFriends && (
-                <p className="text-sm text-gray-400 mt-2">
-                  <Link href="/heroes" className="text-[#a48fff] hover:text-[#d4c6ff]">
-                    Знайти героїв
-                  </Link> щоб призначати квести друзям
-                </p>
-              )}
-              {formData.assignTo === 'self' && (
-                <p className="text-sm text-emerald-400 mt-2">
-                  ✅ Квест буде призначений вам і одразу стане доступним для виконання!
-                </p>
-              )}
-              {formData.assignTo && formData.assignTo !== 'self' && (
-                <p className="text-sm text-[#a48fff] mt-2">
-                  📤 Квест буде надіслано вашому другу. Він зможе його прийняти!
-                </p>
-              )}
-            </div>
-
-            <div className="bg-[#1a1d29] rounded-lg p-4 border border-[#4a4257]">
-              <h3 className="text-lg font-bold text-[#d4c6ff] mb-2 flex items-center">
-                <SparklesIcon size={16} className="mr-2" />
-                Нагороди за квест
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl">🪙</div>
-                  <div className="text-white font-bold">{formData.reward}</div>
-                  <div className="text-gray-400 text-sm">Золото</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl">⭐</div>
-                  <div className="text-white font-bold">{formData.experience}</div>
-                  <div className="text-gray-400 text-sm">Досвід</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-4">
-              <button
-                type="submit"
-                disabled={loading}
-                className="flex-1 btn-primary text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
-              >
-                {loading ? 'Створення...' : 'Створити Квест'}
-              </button>
-              <Link
+      <div className="container mx-auto px-4 py-8 relative z-10">
+        <div className="max-w-2xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center mb-4">
+              <Link 
                 href="/quests/my"
-                className="flex-1 btn-secondary text-white font-bold py-3 px-6 rounded-lg transition-colors text-center"
+                className="mr-4 p-2 rounded-lg bg-[#252838] border border-[#4a4257] hover:border-[#624cab] transition-colors"
               >
-                Скасувати
+                <ArrowLeftIcon size={20} className="text-[#a48fff]" />
               </Link>
+              <h1 className="text-4xl font-bold text-[#d4c6ff] drop-shadow-lg">
+                Створити Новий Квест
+              </h1>
+              <div className="ml-2 text-3xl text-[#a48fff] opacity-80">⚔️</div>
             </div>
+            <p className="text-xl text-gray-300">
+              Перетвори свою справу на епічну місію!
+            </p>
           </div>
-        </form>
+
+          {error && (
+            <div className="bg-red-600 text-white p-4 rounded-lg mb-6 border border-red-500">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="relative rounded-xl overflow-hidden transform transition-all duration-300">
+            {/* Decorative border with magical effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[2px] rounded-xl overflow-hidden">
+              {/* Top-right corner decoration */}
+              <div className="absolute top-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-bl-xl border-b border-l border-[#7a63d4]">
+                <SparklesIcon size={12} className="text-[#a48fff]" />
+              </div>
+              {/* Top-left corner decoration */}
+              <div className="absolute top-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-br-xl border-b border-r border-[#7a63d4]">
+                <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+              </div>
+              {/* Bottom-right corner decoration */}
+              <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tl-xl border-t border-l border-[#7a63d4]">
+                <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+              </div>
+              {/* Bottom-left corner decoration */}
+              <div className="absolute bottom-0 left-0 w-8 h-8 bg-[#3d2b6b] flex items-center justify-center rounded-tr-xl border-t border-r border-[#7a63d4]">
+                <div className="w-2 h-2 bg-[#a48fff] rounded-full opacity-60"></div>
+              </div>
+              
+              {/* Magical sparkles */}
+              <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+              <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+              <div className="absolute top-2 left-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-200"></div>
+              <div className="absolute top-2 right-2 w-1 h-1 bg-[#a48fff] rounded-full animate-pulse animation-delay-400"></div>
+            </div>
+            
+            {/* Card content */}
+            <div className="bg-[#252838] p-6 rounded-xl relative z-10 space-y-6">
+              <div>
+                <label className="block text-[#a48fff] mb-2">Назва квесту</label>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                  </div>
+                  <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                    <input
+                      type="text"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      className="w-full p-3 bg-[#1a1d29] rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none transition-colors"
+                      placeholder="Наприклад: Купити хліб і молоко"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[#a48fff] mb-2">Опис квесту</label>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                  </div>
+                  <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                    <textarea
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      className="w-full p-3 bg-[#1a1d29] rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none transition-colors h-32 resize-none"
+                      placeholder="Детальний опис того, що потрібно зробити..."
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[#a48fff] mb-2">Категорія</label>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                  </div>
+                  <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                    <select
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      className="w-full p-3 pr-8 bg-[#1a1d29] rounded-lg text-gray-100 focus:outline-none transition-colors appearance-none"
+                    >
+                      {categories.map((category) => (
+                        <option key={category.value} value={category.value}>
+                          {category.emoji} {category.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                      <svg className="w-4 h-4 text-[#a48fff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[#a48fff] mb-2 flex items-center">
+                  <SwordIcon size={14} className="mr-2" />
+                  Складність
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {difficulties.map((difficulty) => (
+                    <button
+                      key={difficulty.value}
+                      type="button"
+                      onClick={() => handleDifficultyChange(difficulty.value)}
+                      className={`p-3 rounded-lg border transition-all duration-200 transform hover:scale-105 ${
+                        formData.difficulty === difficulty.value
+                          ? 'border-[#a48fff] bg-[#2a2d3d] shadow-lg'
+                          : 'border-[#4a4257] bg-[#1a1d29] hover:border-[#624cab]'
+                      }`}
+                    >
+                      <div className="text-2xl mb-1">{difficulty.emoji}</div>
+                      <div className="text-sm font-bold text-white">{difficulty.label}</div>
+                      <div className="text-xs text-gray-400">
+                        {difficulty.reward} 🪙 | {difficulty.exp} ⭐
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[#a48fff] mb-2 flex items-center">
+                    <MapPinIcon size={14} className="mr-2" />
+                    Місце виконання
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                      <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                      <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                    </div>
+                    <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                      <input
+                        type="text"
+                        value={formData.location}
+                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                        className="w-full p-3 bg-[#1a1d29] rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none transition-colors"
+                        placeholder="Наприклад: Супермаркет, дім, офіс"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[#a48fff] mb-2 flex items-center">
+                    <ClockIcon size={14} className="mr-2 text-[#a48fff]" />
+                    Дедлайн
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                      <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                      <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                    </div>
+                    <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                      <input
+                        type="datetime-local"
+                        value={formData.dueDate}
+                        onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
+                        className="w-full p-3 bg-[#1a1d29] rounded-lg text-gray-100 focus:outline-none transition-colors"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  id="isUrgent"
+                  checked={formData.isUrgent}
+                  onChange={(e) => setFormData({ ...formData, isUrgent: e.target.checked })}
+                  className="w-4 h-4 text-[#a48fff] bg-[#1a1d29] border-[#4a4257] rounded focus:ring-[#a48fff]"
+                />
+                <label htmlFor="isUrgent" className="text-gray-300">
+                  Терміновий квест ⚡
+                </label>
+              </div>
+
+              {/* Assign to specific hero */}
+              <div>
+                <label className="block text-[#a48fff] mb-2">Призначити квест</label>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#4a4257] via-[#624cab] to-[#3d2b6b] p-[1px] rounded-lg overflow-hidden">
+                    <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse"></div>
+                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-[#d4c6ff] rounded-full animate-pulse animation-delay-300"></div>
+                  </div>
+                  <div className="relative bg-[#1a1d29] rounded-lg p-[1px]">
+                    <select
+                      value={formData.assignTo}
+                      onChange={(e) => setFormData({ ...formData, assignTo: e.target.value })}
+                      className="w-full p-3 pr-8 bg-[#1a1d29] rounded-lg text-gray-100 focus:outline-none transition-colors appearance-none"
+                    >
+                      <option value="self">Собі (я буду виконувати)</option>
+                      {loadingFriends ? (
+                        <option disabled>Завантаження друзів...</option>
+                      ) : friends.length === 0 ? (
+                        <option disabled>Немає друзів. Спочатку знайдіть героїв!</option>
+                      ) : (
+                        friends.map((friend) => (
+                          <option key={friend.id} value={friend.id}>
+                            Другу: {friend.heroName || friend.name} ({getHeroClassLabel(friend.heroClass || '')}) - Рівень {friend.heroLevel}
+                          </option>
+                        ))
+                      )}
+                    </select>
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                      <svg className="w-4 h-4 text-[#a48fff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                {friends.length === 0 && !loadingFriends && (
+                  <p className="text-sm text-gray-400 mt-2">
+                    <Link href="/heroes" className="text-[#a48fff] hover:text-[#d4c6ff]">
+                      Знайти героїв
+                    </Link> щоб призначати квести друзям
+                  </p>
+                )}
+                {formData.assignTo === 'self' && (
+                  <p className="text-sm text-emerald-400 mt-2">
+                    ✅ Квест буде призначений вам і одразу стане доступним для виконання!
+                  </p>
+                )}
+                {formData.assignTo && formData.assignTo !== 'self' && (
+                  <p className="text-sm text-[#a48fff] mt-2">
+                    📤 Квест буде надіслано вашому другу. Він зможе його прийняти!
+                  </p>
+                )}
+              </div>
+
+              <div className="bg-[#1a1d29] rounded-lg p-4 border border-[#4a4257]">
+                <h3 className="text-lg font-bold text-[#d4c6ff] mb-2 flex items-center">
+                  <SparklesIcon size={16} className="mr-2" />
+                  Нагороди за квест
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl">🪙</div>
+                    <div className="text-white font-bold">{formData.reward}</div>
+                    <div className="text-gray-400 text-sm">Золото</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl">⭐</div>
+                    <div className="text-white font-bold">{formData.experience}</div>
+                    <div className="text-gray-400 text-sm">Досвід</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="relative font-medium tracking-wide rounded-lg flex items-center justify-center text-sm py-3 px-6 flex-1 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
+                >
+                  <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                  <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#a48fff] opacity-50 rounded-full"></span>
+                  {loading ? 'Створення...' : 'Створити Квест'}
+                </button>
+                <Link
+                  href="/quests/my"
+                  className="relative font-medium tracking-wide rounded-lg flex items-center justify-center text-sm py-3 px-6 flex-1 bg-gradient-to-r from-gray-600 to-gray-700 text-gray-100 hover:from-gray-700 hover:to-gray-800 border border-gray-500 shadow-lg transition-all duration-200 transform hover:scale-105"
+                >
+                  <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-gray-300 opacity-50 rounded-full"></span>
+                  <span className="absolute right-2 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-gray-300 opacity-50 rounded-full"></span>
+                  Скасувати
+                </Link>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   )
