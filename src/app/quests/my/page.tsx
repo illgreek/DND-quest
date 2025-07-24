@@ -184,8 +184,12 @@ export default function MyQuests() {
         <div className="text-center">
           <h1 className="text-2xl text-red-400 mb-4">Доступ заборонено</h1>
           <p className="text-gray-300 mb-4">Потрібно увійти для перегляду квестів</p>
-          <Link href="/auth/signin" className="text-[#a48fff] hover:text-[#d4c6ff]">
-            Увійти
+          <Link 
+            href="/auth/signin"
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#624cab] to-[#3d2b6b] text-gray-100 hover:from-[#6f55c0] hover:to-[#4a357e] border border-[#7a63d4] shadow-lg rounded-lg transition-all duration-200 transform hover:scale-105"
+          >
+            <span className="mr-2">⚔️</span>
+            Увійти в систему
           </Link>
         </div>
       </div>

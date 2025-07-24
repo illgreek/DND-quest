@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { useState, useEffect } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import { getHeroClassLabel, getHeroClassEmoji } from '@/lib/heroClasses'
 import { HomeIcon, ScrollIcon, PlusIcon, UserIcon, UsersIcon, LogOutIcon, SettingsIcon } from 'lucide-react'
 
@@ -15,8 +16,11 @@ interface Friendship {
 
 export default function Navigation() {
   const { data: session, status } = useSession()
+  const pathname = usePathname()
+  const router = useRouter()
   const [pendingRequests, setPendingRequests] = useState<Friendship[]>([])
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isSigningOut, setIsSigningOut] = useState(false)
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -47,6 +51,52 @@ export default function Navigation() {
     window.addEventListener('friendship-updated', handleFriendshipUpdate)
     return () => window.removeEventListener('friendship-updated', handleFriendshipUpdate)
   }, [session])
+
+  // Функція для визначення активної сторінки
+  const isActivePage = (path: string) => {
+    if (path === '/') {
+      return pathname === '/'
+    }
+    // Спеціальна обробка для сторінок авторизації
+    if (pathname.startsWith('/auth/')) {
+      return false // Сторінки авторизації не показують активну навігацію
+    }
+    // Спеціальна обробка для сторінок квестів
+    if (path === '/quests/my' && pathname.startsWith('/quests/')) {
+      return pathname === '/quests/my' || pathname.startsWith('/quests/my/')
+    }
+    if (path === '/quests/create' && pathname.startsWith('/quests/')) {
+      return pathname === '/quests/create' || pathname.startsWith('/quests/create/')
+    }
+    return pathname.startsWith(path)
+  }
+
+  // Функція для обробки виходу з перенаправленням
+  const handleSignOut = async () => {
+    if (isSigningOut) return // Запобігаємо повторним натисканням
+    
+    setIsSigningOut(true)
+    try {
+      // Виходимо з системи без автоматичного перенаправлення
+      await signOut({ 
+        redirect: false 
+      })
+      
+      // Невелика затримка для забезпечення завершення виходу
+      setTimeout(() => {
+        // Перенаправляємо на сторінку входу
+        router.push('/auth/signin')
+      }, 100)
+    } catch (error) {
+      console.error('Error signing out:', error)
+      // У випадку помилки все одно перенаправляємо
+      router.push('/auth/signin')
+    } finally {
+      setIsSigningOut(false)
+    }
+  }
+
+
 
   if (status === 'loading') {
     return (
@@ -115,7 +165,7 @@ export default function Navigation() {
               icon={<HomeIcon size={20} />}
               label="Головна"
               href="/"
-              isActive={true}
+              isActive={isActivePage('/')}
             />
             
             {session && (
@@ -124,14 +174,14 @@ export default function Navigation() {
                   icon={<ScrollIcon size={20} />}
                   label="Мої Квести"
                   href="/quests/my"
-                  isActive={false}
+                  isActive={isActivePage('/quests/my')}
                 />
                 
                 <NavButton
                   icon={<UsersIcon size={20} />}
                   label={`Герої ${pendingRequests.length > 0 ? `(${pendingRequests.length})` : ''}`}
                   href="/heroes"
-                  isActive={false}
+                  isActive={isActivePage('/heroes')}
                   badge={pendingRequests.length}
                 />
                 
@@ -139,7 +189,7 @@ export default function Navigation() {
                   icon={<PlusIcon size={20} />}
                   label="Створити Квест"
                   href="/quests/create"
-                  isActive={false}
+                  isActive={isActivePage('/quests/create')}
                 />
               </>
             )}
@@ -154,15 +204,24 @@ export default function Navigation() {
                 icon={<UserIcon size={20} />}
                 label="Профіль"
                 href="/profile"
-                isActive={false}
+                isActive={isActivePage('/profile')}
               />
               
               <button
-                onClick={() => signOut()}
-                className="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-[#2a2d3d] hover:text-[#d4c6ff] rounded-md transition-colors"
+                onClick={handleSignOut}
+                disabled={isSigningOut}
+                className={`w-full flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                  isSigningOut 
+                    ? 'text-gray-500 cursor-not-allowed' 
+                    : 'text-gray-300 hover:bg-[#2a2d3d] hover:text-[#d4c6ff]'
+                }`}
               >
-                <LogOutIcon size={20} className="mr-3 text-[#a48fff]" />
-                Вийти
+                {isSigningOut ? (
+                  <div className="w-5 h-5 border-2 border-[#a48fff] border-t-transparent rounded-full animate-spin mr-3"></div>
+                ) : (
+                  <LogOutIcon size={20} className="mr-3 text-[#a48fff]" />
+                )}
+                {isSigningOut ? 'Вихід...' : 'Вийти'}
               </button>
             </div>
           )}
@@ -172,19 +231,34 @@ export default function Navigation() {
       {/* Mobile Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#10131c] border-t border-[#4a4257] z-50">
         <div className="flex justify-around py-2">
-          <Link href="/" className="flex flex-col items-center p-2 text-[#a48fff]">
+          <Link 
+            href="/" 
+            className={`flex flex-col items-center p-2 transition-colors ${
+              isActivePage('/') ? 'text-[#d4c6ff] bg-[#2a2d3d] rounded-md' : 'text-[#a48fff]'
+            }`}
+          >
             <HomeIcon size={20} />
             <span className="text-xs mt-1">Головна</span>
           </Link>
           
           {session && (
             <>
-              <Link href="/quests/my" className="flex flex-col items-center p-2 text-[#a48fff]">
+              <Link 
+                href="/quests/my" 
+                className={`flex flex-col items-center p-2 transition-colors ${
+                  isActivePage('/quests/my') ? 'text-[#d4c6ff] bg-[#2a2d3d] rounded-md' : 'text-[#a48fff]'
+                }`}
+              >
                 <ScrollIcon size={20} />
                 <span className="text-xs mt-1">Квести</span>
               </Link>
               
-              <Link href="/heroes" className="flex flex-col items-center p-2 text-[#a48fff] relative">
+              <Link 
+                href="/heroes" 
+                className={`flex flex-col items-center p-2 transition-colors relative ${
+                  isActivePage('/heroes') ? 'text-[#d4c6ff] bg-[#2a2d3d] rounded-md' : 'text-[#a48fff]'
+                }`}
+              >
                 <UsersIcon size={20} />
                 <span className="text-xs mt-1">Герої</span>
                 {pendingRequests.length > 0 && (
@@ -194,12 +268,22 @@ export default function Navigation() {
                 )}
               </Link>
               
-              <Link href="/quests/create" className="flex flex-col items-center p-2 text-[#a48fff]">
+              <Link 
+                href="/quests/create" 
+                className={`flex flex-col items-center p-2 transition-colors ${
+                  isActivePage('/quests/create') ? 'text-[#d4c6ff] bg-[#2a2d3d] rounded-md' : 'text-[#a48fff]'
+                }`}
+              >
                 <PlusIcon size={20} />
                 <span className="text-xs mt-1">Створити</span>
               </Link>
               
-              <Link href="/profile" className="flex flex-col items-center p-2 text-[#a48fff]">
+              <Link 
+                href="/profile" 
+                className={`flex flex-col items-center p-2 transition-colors ${
+                  isActivePage('/profile') ? 'text-[#d4c6ff] bg-[#2a2d3d] rounded-md' : 'text-[#a48fff]'
+                }`}
+              >
                 <UserIcon size={20} />
                 <span className="text-xs mt-1">Профіль</span>
               </Link>
